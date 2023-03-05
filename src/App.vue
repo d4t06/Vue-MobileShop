@@ -1,33 +1,33 @@
+
+<script setup>
+import Todo from './components/Todo.vue'
+import Button from './components/Button/index.vue'
+import {ref, onMounted, onUnmounted, watch } from 'vue'
+
+const isShow = ref(false)
+const total = ref(1000000)
+const text = ref('show')
+
+const handleShow = () => {
+    isShow.value = !isShow.value
+    text.value = isShow.value ? 'hide' : 'show'
+}
+
+onMounted(() => {
+        console.log("mounted")
+    })
+onUnmounted(() => {
+    console.log("unmounted")
+})
+
+</script>
+
 <template>
     <h1>{{$filters.moneyFormat(total)}}</h1>
     <Button @click="handleShow()" primary outline rounded>{{text}}</Button>
     <br>
     <Todo v-if="isShow" />
 </template>
-
-<script>
-import Todo from './components/Todo.vue'
-import Button from './components/Button/index.vue'
-// import moneyFormat from './utils/moneyFormat'
-
-export default {
-    components: { Todo, Button },
-    data() {
-        return {
-            isShow: false,
-            text: 'show',
-            total: 100000,
-        }
-    },
-    methods: {
-        handleShow: function() {
-            this.isShow = !this.isShow;
-            this.text = this.isShow ? 'hide' : 'show'
-        }
-    },
-    
-}
-</script>
 
 <style scoped>
 </style>

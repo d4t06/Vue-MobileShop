@@ -1,37 +1,101 @@
 <script>
+    import {ref} from 'vue'
 
-export default {
-	name: 'Todo',
+    export default {
+    setup() {
+        const datas = ref([])
+
+        return {
+            datas
+        }
+    },
+
     data() {
         return {
-            job: '',
-            jobs: []
+            // datas: [],
+            categories: [
+                {
+                    name: 'users'
+                },
+                {
+                    name: 'posts'
+                },
+                {
+                    name: 'todos'
+                }
+            ],
+
+            curCategory: 'users',
+            showGoTop: false,
+        }
+    },
+    watch: {
+        curCategory: {
+            handler() {
+            fetch("https://jsonplaceholder.typicode.com/"+this.curCategory)
+                .then (res => res.json())
+                .then (data => {
+                    // console.log(data)
+                    this.datas.value = data})
+
+            },
+            immediate: true,
+        },
+    },
+    methods: {
+       handleGetData:  function (category) {
+        this.curCategory = category
+        // console.log(this.datas)
+       },
+        handleScroll: function () {
+            // console.log(window.scrollY)
+            if (window.scrollY > 200) {
+                this.showGoTop = true
+            } else {
+                this.showGoTop = false
+            }
+        },
+        handleGoTop: function () {
+            // window.scrollY = 0;
+            console.log(this.$refs.inputRef)
         }
     },
     mounted: function () {
-    	console.log("mounted")
+        // const handleScroll = () => {
+        //     console.log(window.scrollY)
+        // }
+            // console.log(window.innerWidth)
+        window.addEventListener("scroll", this.handleScroll)
     },
-    methods: {
-        addJob: function () {
-            this.jobs.push(this.job)
-            this.job=''
-            this.$refs.inputRef.focus()
-        },
-        deleteJob: function (index) {
-            this.jobs.splice(index, 1)
-        }
-    },
+    unmounted: function () {
+        // window.
+        // console.log('unmounted')
+        window.removeEventListener('scroll', this.handleScroll)
+    }
 }
 </script>
 <template>
-    <input ref='inputRef' type="text" v-model="job">
-    <button @click='addJob()'>add</button>
+    <button ref="inputRef" @click="handleGetData(item.name)" :class="{active: this.curCategory === item.name}" v-for="item in this.categories">{{item.name}}</button>
     <ul>
-        <li v-for="(job, index) in jobs" :key='index'>
-            <span>{{job}}</span>
-            <button :id="index" @click="deleteJob(index)">xoa</button>
+        <li v-for="(item, index) in datas.value" :key='index'>
+            {{item.name || item.title}}
         </li>
     </ul>
+    <button @click="handleGoTop" v-if="showGoTop" class="go-top-btn">go top</button>
 </template>
-<style scoped>
+<style scoped type="scss">
+    button {
+    padding: 5px 10px;
+    border: none;
+    font-size: 1.6rem;
+}
+    .active {
+    color: #fff;
+    background-color: #333;
+}
+.go-top-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
 </style>
