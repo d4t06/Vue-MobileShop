@@ -24,14 +24,9 @@ import Header from './components/Header/Header.vue'
 </script>
 
 <template>
-    <!--
-    <h1>{{$filters.moneyFormat(total)}}</h1>
-    <Button @click="handleShow()" primary outline rounded>{{text}}</Button>
-    <br>
-    <Todo v-if="isShow" /> -->
     <Header/>
-    <RouterView />
-</template>
+    <div class="container">
+        <RouterView />
+    </div>
 
-<style scoped>
-</style>
+</template>
