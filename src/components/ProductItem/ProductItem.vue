@@ -42,7 +42,7 @@ console.log(route.query)
 
                   <div class="product-item_price">
                      <div v-if="item.old_price" class="price-top">
-                        <span class="product-item_price--old"> {{ item.old_price }} </span>
+                        <span class="product-item_price--old"> {{ $filter.moneyFormat(item.old_price) }} </span>
                      </div>
 
                      <h1 class="product-item_price--current">{{ $filter.moneyFormat(item.cur_price) }}</h1>

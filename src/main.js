@@ -8,8 +8,8 @@ const app = createApp(App)
 
 app.config.globalProperties.$filter = {
     moneyFormat(value) {
-        const formater = new Intl.NumberFormat("en-US");
-        return formater.format(value) + "₫";
+        const formatter = new Intl.NumberFormat("en-US");
+        return formatter.format(value) + "₫";
     }
 }
 app.use(router);

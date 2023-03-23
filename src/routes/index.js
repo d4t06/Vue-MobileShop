@@ -4,7 +4,9 @@ import Product from '../pages/Product/Product.vue'
 
 const routes = [
     {path: '/', component: Home},
-    {path: '/product', component: Product}
+    {path: '/dtdd', component: Product},
+    {path: '/laptop', component: Product},
+    {path: '/phukien', component: Product},
 ]
 
 const router = createRouter({

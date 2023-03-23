@@ -1,6 +1,6 @@
 <script setup>
 import Search from '../Search/Search.vue'
-// import styles from './Header.module.scss'
+import {headPhoneIcons, laptopIcon, mobileIcons} from "../../assets/icons"
 
 </script>
 <template>
@@ -29,25 +29,22 @@ import Search from '../Search/Search.vue'
                   <ul class="nav-list">
                      <li class="nav-item">
                      
-                        <RouterLink to="/product"
+                        <RouterLink to="/dtdd"
                         >
-                           <!-- <MdPhoneaRing/> -->
-                           <span class="ti-mobile"></span>
+                           <mobileIcons/>
                            <p class='nav-text'>Điện thoại</p>
                            </RouterLink>
                      </li>
                      <li class="nav-item">
                         <RouterLink to="/laptop" 
                         >
-                           <!-- <BsLaptop/> -->
-                           <span class="ti-desktop"></span>
+                           <laptopIcon/>
                            <p class='nav-text'>Laptop</p>
                            </RouterLink>
                      </li>
                      <li class="nav-item">
-                        <RouterLink to="/laptop">
-                           <!-- <BsHeadphones/> -->
-                           <span class="ti-headphone"></span>
+                        <RouterLink to="/phukien">
+                           <headPhoneIcons/>
                            <p class='nav-text'>Phụ kiện</p>
                         </RouterLink>
                      </li>
