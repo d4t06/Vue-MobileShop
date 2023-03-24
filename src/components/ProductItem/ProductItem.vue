@@ -5,9 +5,6 @@ const props = defineProps({
    data: Array,
 });
 
-
-const route = useRoute()
-console.log(route.query)
 </script>
 
 <template>

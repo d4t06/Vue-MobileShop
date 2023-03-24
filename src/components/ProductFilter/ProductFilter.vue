@@ -3,6 +3,10 @@ import { ref } from "vue";
 import Checkbox from "./childs/Checkbox.vue";
 import Radiobox from "./childs/Radiobox.vue";
 import { brands, prices } from "./childs/continents";
+
+const props = defineProps({
+  category: String
+})
 </script>
 
 <template>
@@ -11,14 +15,14 @@ import { brands, prices } from "./childs/continents";
       <div class="filter-section">
         <h2 class="filter-title">Hãng sản xuất</h2>
         <div class="filter-list">
-          <Checkbox :data="brands['dtdd']" />
+          <Checkbox :data="brands[category]" />
           <!-- truyền handleFilter vào cop Checkbox, chực hiện sau trể về đối số là filter sau đó tt -->
         </div>
       </div>
       <div class="filter-section">
         <h2 class="filter-title">Mức giá</h2>
         <div class="filter-list price">
-          <Radiobox :data="prices['dtdd']" />
+          <Radiobox :data="prices[category]" />
         </div>
       </div>
     </div>
@@ -29,7 +33,6 @@ import { brands, prices } from "./childs/continents";
 .product-filter {
   padding: 10px;
   padding-top: 15px;
-  margin-top: 15px;
   margin-left: 30px;
 }
 .filter-section {

@@ -1,5 +1,6 @@
 <script setup>
-
+import { checkCompatEnabled } from '@vue/compiler-core';
+import {ref} from 'vue'
 const continents = [
    {
       id: 1,
@@ -27,6 +28,12 @@ const continents = [
    },
 ];
 
+const checked = ref(1)
+
+const handleToggle = (id) => {
+   checked.value = id;
+}
+
 </script>
 
 <template>
@@ -34,8 +41,10 @@ const continents = [
          <h1>Xem theo</h1>
          <ul class='btn-group'>
                   <li
+                  v-for="item, index in continents"
                      class ='sort-btn'
-                     v-for="item in continents"
+                     :class="{active: item.id === checked}"
+                     @click="() => handleToggle(item.id)"
                   >
                      {{item.value}}
                   </li>

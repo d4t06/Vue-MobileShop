@@ -43,7 +43,7 @@ import {headPhoneIcons, laptopIcon, mobileIcons} from "../../assets/icons"
                            </RouterLink>
                      </li>
                      <li class="nav-item">
-                        <RouterLink to="/phukien">
+                        <RouterLink to="/laptop">
                            <headPhoneIcons/>
                            <p class='nav-text'>Phụ kiện</p>
                         </RouterLink>

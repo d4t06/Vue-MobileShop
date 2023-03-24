@@ -11,12 +11,8 @@ const curScroll = ref(0);
 const imageSliderRef = ref();
 const curIndex = ref(1);
 
-
-
 const imageWidth = props.banner ? 1100 : 625;
 const maxScroll = imageWidth * (props.data.length - 1);
-
-console.log(maxScroll);
 
 watch(curScroll, () => {
   console.log("curScroll change");
@@ -26,7 +22,7 @@ watch(curScroll, () => {
 const nextImage = () => {
   if (curScroll.value >= maxScroll) {
     curScroll.value = 0;
-    curIndex.value = 0;
+    curIndex.value = 1;
   } else {
      curScroll.value += 1100;
      curIndex.value += 1;
@@ -37,16 +33,13 @@ const nextImage = () => {
 const prevImage = () => {
   if (curScroll.value == 0) {
      curScroll.value = maxScroll;
-     curIndex.value = data.length;
+     curIndex.value = props.data.length;
   } else {
      curScroll.value -= 1100;
      curIndex.value -= 1;
   }
 };
 
-onMounted(() => {});
-
-console.log(checked.value);
 </script>
 
 <template>

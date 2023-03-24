@@ -1,4 +1,15 @@
 <script setup>
+   import debounce from 'lodash.debounce'
+   import {ref, watch} from 'vue'
+
+   const searchRef = ref('')
+   
+   const saveSearchChange = debounce(() => {
+      console.log("send api");
+   }, 500)
+
+   watch(searchRef, saveSearchChange);
+
 
 </script>
 <template>
@@ -8,6 +19,7 @@
                   className='input'
                   type="text"
                   placeholder="Hôm nay bạn muốn tìm gì..."
+                  v-model="searchRef"
                   
                />
                <!-- {loading && query && (
