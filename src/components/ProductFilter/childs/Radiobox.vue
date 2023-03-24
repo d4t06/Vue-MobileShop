@@ -3,13 +3,17 @@ import {ref} from 'vue'
 
 const props = defineProps({
     data: Array,
+    handleFilter: Function,
 })
 
-const checked = ref('');
-// item string === item string => true
-const handleToggle = (array) => {
 
-    console.log(JSON.stringify(array))
+const checked = ref('');
+// empty string === empty string => true
+const handleToggle = (array) => {
+    checked.value = array
+
+    props.handleFilter(checked.value, "price")
+    // props.handleFilter(array, 'brand')
 
 }
 </script>
@@ -20,7 +24,7 @@ const handleToggle = (array) => {
             <input
             type="radio"
             :id="item.text"
-            :checked="JSON.stringify(checked) === JSON.stringify(item.array) ? true : false"
+            :checked="JSON.stringify(checked) == JSON.stringify(item.array) ? true : false"
             @change="() => handleToggle(item.array)"
             />
             <label class='label' :for="item.text">{{ item.text }}</label>

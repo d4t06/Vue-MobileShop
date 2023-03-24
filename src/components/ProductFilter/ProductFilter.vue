@@ -1,12 +1,53 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed, unref, reactive } from "vue";
+import { storeToRefs } from 'pinia'
+// import {$ref} from 'vue/macros-global'
 import Checkbox from "./childs/Checkbox.vue";
 import Radiobox from "./childs/Radiobox.vue";
 import { brands, prices } from "./childs/continents";
+import { getAllAndStore } from "../../store/actions";
+import { useProductStore } from "../../store/productStore";
 
+const productFilter = ref({})
 const props = defineProps({
   category: String
 })
+const productStore = useProductStore();
+
+const { page, sort} = computed(() => {return {
+  page: productStore.page,
+  sort: productStore.sort
+}})
+
+
+const showFilteredResults = (filters) => {
+  getAllAndStore(productStore, {category: props.category, page, sort, filters})
+}
+
+
+const handleFilter = (filter, by) => {
+        const newFilter ={ ...unref(productFilter)}
+
+
+        // nếu chọn tất cả
+
+        console.log("filter = ", filter)
+        console.log("newFilter = ", newFilter)
+        if (!filter) {
+         delete productFilter.value[by];
+      } else {
+        productFilter.value[by] = filter;
+      }
+
+      // nếu không có filter gì cả
+      if (!productFilter.value['brand'] && !productFilter.value['price'])
+        productFilter.value = "";
+
+        // const {price, brand} = productFilter
+      console.log("new product filters = ", productFilter.value)
+      showFilteredResults(productFilter.value);
+
+}
 </script>
 
 <template>
@@ -15,14 +56,14 @@ const props = defineProps({
       <div class="filter-section">
         <h2 class="filter-title">Hãng sản xuất</h2>
         <div class="filter-list">
-          <Checkbox :data="brands[category]" />
+          <Checkbox :data="brands[category]" :handleFilter="handleFilter" />
           <!-- truyền handleFilter vào cop Checkbox, chực hiện sau trể về đối số là filter sau đó tt -->
         </div>
       </div>
       <div class="filter-section">
         <h2 class="filter-title">Mức giá</h2>
         <div class="filter-list price">
-          <Radiobox :data="prices[category]" />
+          <Radiobox :data="prices[category]" :handleFilter="handleFilter" />
         </div>
       </div>
     </div>

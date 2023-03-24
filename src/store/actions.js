@@ -1,7 +1,9 @@
 import * as productServices from '../services/productServices';
 // import searchService from '../services/searchService';
 const getAllAndStore = async (piniaActions, query) => {
+    console.log("getAllAndStore query = ", query)
 
+   //  return;
    try {
       const response = await productServices.getProducts(query);
       if (response) {

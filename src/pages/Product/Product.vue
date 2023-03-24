@@ -24,7 +24,7 @@ const {products, page} = storeToRefs(productStore)
 watch(route, async() => {
   curCategory.value = route.params.category;
 
-  getAllAndStore(productStore, {category: curCategory.value, page: 1});
+  // getAllAndStore(productStore, {category: curCategory.value, page: 1});
 }, {immediate: true})
 
 const bannerImages = computed(() => {
@@ -32,7 +32,7 @@ const bannerImages = computed(() => {
 })
 
 const handleGetMore = () => {
-  getAllAndStore({category: curCategory, page: page += 1})
+  getAllAndStore({category: curCategory, page: page + 1})
 }
 
 

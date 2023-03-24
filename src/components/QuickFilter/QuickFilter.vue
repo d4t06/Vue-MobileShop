@@ -7,8 +7,6 @@ const props = defineProps({
    handleFilter: () => {}
 });
 
-
-console.log(props.category)
 </script>
 
 <template>
