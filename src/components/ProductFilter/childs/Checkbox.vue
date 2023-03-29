@@ -9,26 +9,30 @@ const props = defineProps({
 const checkedList = ref('');
 
 const handleToggle = (value) => {
-  // const newChecked = checkedList.value
+  // e.preventDefault()
+  let newChecked = [...checkedList.value]
 
-  const index = checkedList.value.indexOf(value);
+  // console.log(!value, JSON.stringify(newChecked) === '[]');
+
   // nếu chọn tất cả
-  if (!value) checkedList.value = "";
+  if (!value && JSON.stringify(newChecked) === '[]') return;
+  if (!value) newChecked = "";
   else {
-    const index = checkedList.value.indexOf(value);
+    const index = newChecked.indexOf(value);
 
     if (index === -1) {
       // kiem tra xem co phai array khong
-      Array.isArray(checkedList.value)
-        ? checkedList.value.push(value)
-        : (checkedList.value = [value]);
-    } else checkedList.value.splice(index, 1);
+      Array.isArray(newChecked)
+        ? newChecked.push(value)
+        : (newChecked = [value]);
+    } else newChecked.splice(index, 1);
   }
 
-  // nếu không chọn gì cả
-  if (JSON.stringify(checkedList.value) === "[]") checkedList.value = '';
+  // if empty
+  if (JSON.stringify(newChecked) === "[]") newChecked = '';
 
-  props.handleFilter(checkedList.value, "brand");
+  checkedList.value = newChecked;
+  props.handleFilter(newChecked, "brand");
 };
 </script>
 
@@ -37,14 +41,17 @@ const handleToggle = (value) => {
     <input
       :id="item.text"
       type="checkbox"
-      @change="() => handleToggle(item.href)"
-      :checked="checkedList.indexOf(item.href) != -1 ? true : false"
+      :checked="checkedList.indexOf(item.href) !== -1 ? true : false"
+      @change="(e) => handleToggle(item.href)"
     />
     <label :for="item.text" class="label">{{ item.text }}</label>
   </div>
 </template>
 
 <style scoped>
+input {
+  scale: 1.2;
+}
 .label {
   font-size: 1.6rem;
   padding-left: 5px;

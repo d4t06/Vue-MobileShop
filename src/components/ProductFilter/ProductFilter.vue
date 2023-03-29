@@ -1,96 +1,100 @@
 <script setup>
-import { ref, computed, unref, reactive } from "vue";
-import { storeToRefs } from 'pinia'
+import { ref, computed, unref, reactive } from 'vue';
+import { storeToRefs } from 'pinia';
 // import {$ref} from 'vue/macros-global'
-import Checkbox from "./childs/Checkbox.vue";
-import Radiobox from "./childs/Radiobox.vue";
-import { brands, prices } from "./childs/continents";
-import { getAllAndStore } from "../../store/actions";
-import { useProductStore } from "../../store/productStore";
+import Checkbox from './childs/Checkbox.vue';
+import Radiobox from './childs/Radiobox.vue';
+import { brands, prices } from './childs/continents';
+import { getAllAndStore } from '../../store/actions';
+import { useProductStore } from '../../store/productStore';
 
-const productFilter = ref({})
+const productFilter = ref({});
 const props = defineProps({
-  category: String
-})
+   category: String,
+});
 const productStore = useProductStore();
 
-const { page, sort} = computed(() => {return {
-  page: productStore.page,
-  sort: productStore.sort
-}})
-
+const { page, sort } = computed(() => {
+   return {
+      page: productStore.page,
+      sort: productStore.sort,
+   };
+});
 
 const showFilteredResults = (filters) => {
-  getAllAndStore(productStore, {category: props.category, page, sort, filters})
-}
-
+   getAllAndStore(productStore, {
+      category: props.category,
+      page,
+      sort,
+      filters,
+   });
+};
 
 const handleFilter = (filter, by) => {
-        const newFilter ={ ...unref(productFilter)}
+   let newFilter = { ...productFilter.value };
 
+   // nếu chọn tất cả
+   if (!filter) {
+      delete newFilter[by];
+   } else {
+      newFilter[by] = filter;
+   }
 
-        // nếu chọn tất cả
+   // nếu không có filter gì cả
+   if (!newFilter['brand'] && !newFilter['price']) newFilter = '';
 
-        console.log("filter = ", filter)
-        console.log("newFilter = ", newFilter)
-        if (!filter) {
-         delete productFilter.value[by];
-      } else {
-        productFilter.value[by] = filter;
-      }
-
-      // nếu không có filter gì cả
-      if (!productFilter.value['brand'] && !productFilter.value['price'])
-        productFilter.value = "";
-
-        // const {price, brand} = productFilter
-      console.log("new product filters = ", productFilter.value)
-      showFilteredResults(productFilter.value);
-
-}
+   productFilter.value = newFilter;
+   showFilteredResults(newFilter);
+};
 </script>
 
 <template>
-  <div class="col col-3">
-    <div class="product-filter">
-      <div class="filter-section">
-        <h2 class="filter-title">Hãng sản xuất</h2>
-        <div class="filter-list">
-          <Checkbox :data="brands[category]" :handleFilter="handleFilter" />
-          <!-- truyền handleFilter vào cop Checkbox, chực hiện sau trể về đối số là filter sau đó tt -->
-        </div>
+   <div class="col col-3">
+      <div class="product-filter">
+         <div class="filter-section">
+            <h2 class="filter-title">Hãng sản xuất</h2>
+            <div class="filter-list">
+               <Checkbox
+                  :data="brands[category]"
+                  :handleFilter="handleFilter"
+               />
+               <!-- truyền handleFilter vào cop Checkbox, chực hiện sau trể về đối số là filter sau đó tt -->
+            </div>
+         </div>
+         <div class="filter-section">
+            <h2 class="filter-title">Mức giá</h2>
+            <div class="filter-list price">
+               <Radiobox
+                  :data="prices[category]"
+                  :handleFilter="handleFilter"
+               />
+            </div>
+         </div>
       </div>
-      <div class="filter-section">
-        <h2 class="filter-title">Mức giá</h2>
-        <div class="filter-list price">
-          <Radiobox :data="prices[category]" :handleFilter="handleFilter" />
-        </div>
-      </div>
-    </div>
-  </div>
+   </div>
 </template>
 
 <style scoped lang="scss">
 .product-filter {
-  padding: 10px;
-  padding-top: 15px;
-  margin-left: 30px;
+   padding: 10px;
+   padding-top: 15px;
+   margin-left: 30px;
 }
 .filter-section {
-  margin-bottom: 25px;
-  padding-left: 5px;
+   margin-bottom: 25px;
+   padding-left: 5px;
 }
 .filter-title {
-  margin-bottom: 15px;
-  font-weight: 600;
+   margin-bottom: 15px;
+   font-weight: 600;
 }
 .filter-list {
-  display: flex;
-  flex-wrap: wrap;
-  column-gap: 15px;
-  row-gap: 17px;
+   display: flex;
+   flex-wrap: wrap;
+   column-gap: 15px;
+   row-gap: 17px;
 }
 .price {
-  flex-direction: column;
+   flex-direction: column;
 }
 </style>

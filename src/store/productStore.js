@@ -11,11 +11,12 @@ export const useProductStore = defineStore("productStore", {
         }),
     actions: {
         store(payload) {
-            // console.log("payload  =", payload);
+            console.log("payload  =", payload);
             this.products = payload.products || []
             this.page = payload.page || 1
             this.filters = payload.filters || '',
-            this.sort = payload.sort || '',
+            this.category = payload.category || '',
+            this.sort = payload.sort || '', 
             this.status = payload.status || ''
         }
     }

@@ -1,5 +1,6 @@
 <script setup>
 import {ref} from 'vue'
+import {nanoid} from 'nanoid'
 
 const props = defineProps({
     data: Array,
@@ -23,11 +24,11 @@ const handleToggle = (array) => {
     <div v-for="item in data" class='filter-item'>
             <input
             type="radio"
-            :id="item.text"
+            :id="item.text + item.id"
             :checked="JSON.stringify(checked) == JSON.stringify(item.array) ? true : false"
             @change="() => handleToggle(item.array)"
             />
-            <label class='label' :for="item.text">{{ item.text }}</label>
+            <label class='label' :for="item.text + item.id">{{ item.text }}</label>
     </div>
    
 </template>
