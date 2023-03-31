@@ -1,40 +1,48 @@
 <script setup>
-import {ref} from 'vue'
+import { storeToRefs } from 'pinia';
+import { ref, watch } from 'vue';
+import { useFiltersStore } from '../../../store/filterStore';
 
 const props = defineProps({
-    data: Array,
-    handleFilter: Function,
-})
-
-
+   data: Array,
+   handleFilter: Function,
+});
+const filterStore = useFiltersStore()
+const {filters} = storeToRefs(filterStore)
 const checked = ref('');
-// empty string === empty string => true
+
+watch(
+   filterStore,
+   () => {
+      checked.value = filters.value.price;
+   },
+   { immediate: true }
+);
+
 const handleToggle = (array) => {
-    checked.value = array
+   checked.value = array;
 
-    props.handleFilter(checked.value, "price")
-    // props.handleFilter(array, 'brand')
-
-}
+   props.handleFilter(checked.value, 'price');
+};
 </script>
 
 <template>
-
-    <div v-for="item in data" class='filter-item'>
-            <input
-            type="radio"
-            :id="item.text + item.id"
-            :checked="JSON.stringify(checked) == JSON.stringify(item.array) ? true : false"
-            @change="() => handleToggle(item.array)"
-            />
-            <label class='label' :for="item.text + item.id">{{ item.text }}</label>
-    </div>
-   
+   <div v-for="item in data" class="filter-item">
+      <input
+         type="radio"
+         :id="item.text + item.id"
+         :checked="
+            JSON.stringify(checked) === JSON.stringify(item.array) ? true : false
+         "
+         @change="() => handleToggle(item.array)"
+      />
+      <label class="label" :for="item.text + item.id">{{ item.text }}</label>
+   </div>
 </template>
 
 <style scoped>
 .label {
-  font-size: 1.6rem;
-  padding-left: 5px;
+   font-size: 1.6rem;
+   padding-left: 5px;
 }
 </style>

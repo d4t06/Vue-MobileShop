@@ -1,49 +1,51 @@
 <script setup>
-import { ref, computed } from "vue";
-import Checkbox from "./childs/Checkbox.vue";
-import Radiobox from "./childs/Radiobox.vue";
-import { brands, prices } from "./childs/continents.js";
+import { ref, computed, watch } from 'vue';
+import Checkbox from './childs/Checkbox.vue';
+import Radiobox from './childs/Radiobox.vue';
+import { brands, prices } from './childs/continents.js';
 
-import { getAllAndStore } from "../../store/actions";
-import { useProductsStore } from "../../store/productStore";
-import { useFiltersStore } from "../../store/filterStore";
+import { getAllAndStore } from '../../store/actions';
+import { useProductsStore } from '../../store/productStore';
+import { useFiltersStore } from '../../store/filterStore';
+import { storeToRefs } from 'pinia';
 
-const productFilter = ref({});
 const props = defineProps({
    category: String,
+});
+const productFilter = ref({
+   filters: { brand: '', price: '' },
 });
 const productStore = useProductsStore();
 const filterStore = useFiltersStore();
 
-const { page, sort } = computed(() => {
-   return {
-      page: productStore.page,
-      sort: filterStore.sort,
-   };
-});
+const { filters, sort } = storeToRefs(filterStore);
 
-const showFilteredResults = (filters) => {
+const showFilteredResults = (newFilters) => {
    getAllAndStore(productStore, {
       category: props.category,
       page: 1,
-      sort,
-      filters,
+      sort: sort.value.column ? sort.value : '',
+      filters: newFilters,
    });
-   filterStore.storingFilters({ filters, sort });
+   filterStore.storingFilters({ filters: newFilters, sort: sort.value });
 };
+
+watch(
+   filterStore,
+   () => {
+      productFilter.value = filters.value;
+   },
+   { immediate: true }
+);
 
 const handleFilter = (filter, by) => {
    let newFilter = { ...productFilter.value };
 
-   // nếu chọn tất cả
-   if (!filter) {
-      delete newFilter[by];
-   } else {
-      newFilter[by] = filter;
-   }
+   newFilter[by] = filter;
 
    // nếu không có filter gì cả
-   if (!newFilter["brand"] && !newFilter["price"]) newFilter = "";
+   if (!newFilter['brand']) delete newFilter['brand']
+   if (!newFilter['price']) delete newFilter['price']
 
    productFilter.value = newFilter;
    showFilteredResults(newFilter);

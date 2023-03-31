@@ -4,6 +4,7 @@
 const props = defineProps({
    data: Array,
 });
+const route = useRoute()
 
 </script>
 
@@ -13,9 +14,9 @@ const props = defineProps({
       <div class="row">
          <div v-for="item in data" class="col col-4">
             <div class="product-item">
-               <a class="product-item-frame">
+               <RouterLink :to="`/${route.params.category}/${item.href}`" class="product-item-frame">
                   <img class="product-item-image" :src="item.image"/>
-               </a>
+               </RouterLink>
                <div class="product-item-event">
                   <span v-if="item.label" class="event-label"> {{ item.label }} </span>
                </div>

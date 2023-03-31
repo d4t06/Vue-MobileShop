@@ -53,7 +53,7 @@ import {headPhoneIcons, laptopIcon, mobileIcons} from "../../assets/icons"
             </div>
          </div>
 </template>
-<style lang="scss">
+<style scoped lang="scss">
 // @import '../../assets/themify-icons/themify-icons.css';
 @import './Header.module.scss'
 </style>

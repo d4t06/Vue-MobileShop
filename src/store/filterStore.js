@@ -2,15 +2,17 @@ import { defineStore } from "pinia";
 
 export const useFiltersStore = defineStore("filterStore", {
     state: () => ({
-        filters: '',
-        sort: '',
+        filters: {brand: '', price: ''},
+        sort: {column: '', type: ''},
     }),
     actions: {
         storingFilters(payload) {
             console.log("payload filterStore  =", payload);
 
-            this.filters = payload.filters || '',
-            this.sort = payload.sort || ''
+            this.filters.brand = payload.filters.brand || '',
+            this.filters.price = payload.filters.price || '',
+            this.sort.column = payload.sort.column || '',
+            this.sort.type = payload.sort.type || ''
         }
     }
 })

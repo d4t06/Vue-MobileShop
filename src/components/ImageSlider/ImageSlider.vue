@@ -24,7 +24,7 @@ const nextImage = () => {
     curScroll.value = 0;
     curIndex.value = 1;
   } else {
-     curScroll.value += 1100;
+     curScroll.value += imageWidth;
      curIndex.value += 1;
   }
   //   checked.value += 1;
@@ -35,7 +35,7 @@ const prevImage = () => {
      curScroll.value = maxScroll;
      curIndex.value = props.data.length;
   } else {
-     curScroll.value -= 1100;
+     curScroll.value -= imageWidth;
      curIndex.value -= 1;
   }
 };

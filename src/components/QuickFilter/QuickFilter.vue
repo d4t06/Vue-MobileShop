@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 
 import { brands } from "../ProductFilter/childs/continents";
 import { defineProps } from "vue";
@@ -16,57 +16,61 @@ const props = defineProps({
 
 const filterStore = useFiltersStore();
 const productStore = useProductsStore();
-const productFilter = ref('');
+const productFilter = ref({brand: '', price: ''});
 
-const {sort} = storeToRefs(filterStore)
+const {sort, filters} = storeToRefs(filterStore)
 
-const showFilteredResults = (filters) => {
+const showFilteredResults = (newFilters) => {
    getAllAndStore(productStore, {
       category: props.category,
       page: 1,
-      sort: sort.value,
-      filters,
+      sort: sort.value.column ? sort.value : '',
+      filters: newFilters,
    });
-   filterStore.storingFilters({ filters, sort });
+   filterStore.storingFilters({ filters: newFilters, sort });
 };
 
-// const isFiltered =
-//    (JSON.stringify(Filters.value) !== "{}" && Filters.value?.brand) ||
-//    Filters.value?.price;
-
-const isFiltered = computed(() => productFilter?.value.brand || productFilter?.value.price)
+watch(filterStore,
+() => {
+   productFilter.value = filters.value
+},
+{immediate: true}
+)
+const isFiltered = computed(() => !!(productFilter.value.brand || productFilter.value.price))
 
 const handleFilter = (filter, by) => {
    // tao object
    let newFilter = { ...productFilter.value };
 
-   // nếu chọn tất cả
-   if (!filter) {
-      delete newFilter[by];
+   if (by === 'clear') {
+      newFilter = '';
    } else {
       newFilter[by] = filter;
+         // nếu không có filter gì cả
+         if (!newFilter['brand']) delete newFilter['brand']
+         if (!newFilter['price']) delete newFilter['price']
    }
 
-   // nếu không có filter gì cả
-   if (!newFilter["brand"] && !newFilter["price"]) newFilter = "";
+
+
 
    productFilter.value = newFilter;
    showFilteredResults(newFilter);
 };
 
-console.log(isFiltered)
+console.log('isFiltered = ', isFiltered.value)
 </script>
 
 <template>
    <div class="brand-sort">
       <div class="quick-filter-container">
-         <!-- <FilteredItem
+         <FilteredItem
             v-if="isFiltered"
             :category="category"
-            :data="Filters"
+            :data="productFilter"
             :handleFilter="handleFilter"
-         /> -->
-         <BrandList :data="brands[category]" :handleFilter="handleFilter" />
+         />
+         <BrandList v-else :data="brands[category]" :handleFilter="handleFilter" />
       </div>
    </div>
 </template>

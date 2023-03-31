@@ -10,7 +10,7 @@ export const getProducts = async (querys) => {
 
    if (!querys) {
       console.log("product service missing query");
-      return []
+      return;
    }
    try {
       const response = await request.get(`/products`, {

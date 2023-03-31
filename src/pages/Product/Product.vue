@@ -1,6 +1,6 @@
 <script setup>
 import { useRoute } from "vue-router";
-import { watch, ref, computed, toRefs } from "vue";
+import { watch,  ref, computed } from "vue";
 import { storeToRefs } from "pinia";
 import config from "../../config";
 
@@ -23,10 +23,10 @@ const route = useRoute();
 const curCategory = ref(route.params.category);
 
 // props
-const { products, page, status } = storeToRefs(productsStore);
+const { products, page } = storeToRefs(productsStore);
 const { filters, sort } = storeToRefs(filtersStore);
 
-const rows = computed(() => products.value);
+const countProduct = computed(() => productsStore.getCount - page.value * config.pageSize)
 
 watch(
    route,
@@ -37,6 +37,7 @@ watch(
    { immediate: true }
 );
 
+
 const bannerImages = computed(() => {
    return banners[curCategory.value]
       .slice(0, banners[curCategory.value].length - 5)
@@ -44,13 +45,18 @@ const bannerImages = computed(() => {
 });
 
 const handleGetMore = () => {
+   const isFiltered = filters.value.brand || filters.value.price
+   
    getAllAndStore(productsStore, {
       category: curCategory.value,
-      filters: filters.value,
-      sort: sort.value,
+      filters: isFiltered ? filters.value : '',
+      sort: sort.value.column ? sort.value : '',
       page: page.value + 1,
    });
 };
+
+
+// console.log('re-render countproduct =', countProduct.value);
 </script>
 <template>
    <div class="product-container">
@@ -61,15 +67,16 @@ const handleGetMore = () => {
             <!-- ref in template not .value -->
             <QuickFilter :category="curCategory" />
 
-            <ProductItem :data="products.rows" />
+            <ProductItem v-if="products.rows" :data="products.rows" />
 
             <div class="pagination">
                <Button
                   outline
                   rounded
-                  :count="products.count - page * config.pageSize"
+                  :count="countProduct < 0 ? 0 : countProduct"
                   describe="sản phẩm"
                   @click="() => handleGetMore()"
+                  :disable="countProduct <= 0"
                >
                   Xem thêm
                </Button>

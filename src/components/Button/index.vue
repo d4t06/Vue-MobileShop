@@ -6,14 +6,16 @@
 		    outline: Boolean,
 		    rounded: Boolean,
 		    fill: Boolean,
+		    full: Boolean,
 			count: Number,
-			describe: String
+			describe: String,
+			disable: Boolean
 		  }
 	}
 </script>
 <template>
 
-	<button :class="{primary: true, outline, rounded, fill}">
+	<button :class="{primary: true, outline, rounded, fill, full, disable}">
 		<slot/> {{ count }} {{ describe }}
 	</button>
 

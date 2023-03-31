@@ -2,11 +2,16 @@ import { defineStore } from "pinia";
 
 export const useProductsStore = defineStore("productStore", {
     state: () => ({
-        products: '',
+        products: {rows:'', count:''},
         category: '',
         page: 1,
         status: ''
     }),
+    getters: {
+        getCount() {
+            return this.products.count
+        }
+    },
     actions: {
         storingProducts(payload) {
             console.log("payload productStore  =", payload);
