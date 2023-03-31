@@ -1,6 +1,5 @@
 <script setup>
 import {ref} from 'vue'
-import {nanoid} from 'nanoid'
 
 const props = defineProps({
     data: Array,

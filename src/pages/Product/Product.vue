@@ -1,32 +1,38 @@
 <script setup>
-import { useRoute } from 'vue-router';
-import { watch, ref, computed } from 'vue';
-import { storeToRefs } from 'pinia';
-import { useProductStore } from '../../store/productStore';
-import * as productServices from '../../services/productServices';
-import { getAllAndStore } from '@/store/actions/';
+import { useRoute } from "vue-router";
+import { watch, ref, computed, toRefs } from "vue";
+import { storeToRefs } from "pinia";
+import config from "../../config";
 
-import ImageSlider from '../../components/ImageSlider/ImageSlider.vue';
-import ProductItem from '../../components/ProductItem/ProductItem.vue';
-import ProductFilter from '../../components/ProductFilter/ProductFilter.vue';
-import Button from '../../components/Button/index.vue';
-import QuickFilter from '../../components/QuickFilter/QuickFilter.vue';
+import { useProductsStore } from "../../store/productStore";
+import { useFiltersStore } from "../../store/filterStore";
 
-import { banners } from '../../assets/data';
+import { getAllAndStore } from "@/store/actions/";
 
-const productStore = useProductStore();
+import ImageSlider from "../../components/ImageSlider/ImageSlider.vue";
+import ProductItem from "../../components/ProductItem/ProductItem.vue";
+import ProductFilter from "../../components/ProductFilter/ProductFilter.vue";
+import Button from "../../components/Button/index.vue";
+import QuickFilter from "../../components/QuickFilter/QuickFilter.vue";
+
+import { banners } from "../../assets/data";
+
+const productsStore = useProductsStore();
+const filtersStore = useFiltersStore();
 const route = useRoute();
 const curCategory = ref(route.params.category);
 
 // props
-const { products, page, category, filters, sort } = storeToRefs(productStore);
+const { products, page, status } = storeToRefs(productsStore);
+const { filters, sort } = storeToRefs(filtersStore);
+
+const rows = computed(() => products.value);
 
 watch(
    route,
    async () => {
       curCategory.value = route.params.category;
-
-      getAllAndStore(productStore, { category: curCategory.value, page: 1 });
+      getAllAndStore(productsStore, { category: curCategory.value, page: 1 });
    },
    { immediate: true }
 );
@@ -34,19 +40,12 @@ watch(
 const bannerImages = computed(() => {
    return banners[curCategory.value]
       .slice(0, banners[curCategory.value].length - 5)
-      .split('*and*');
+      .split("*and*");
 });
 
 const handleGetMore = () => {
-   // console.log(category.value);
-   // const {category, page, filters, sort} = {
-   //    category: productStore.category,
-   //    page: productStore.page,
-   //    filters: productStore.filters,
-   //    sort: productStore.sort
-   //  }
-   getAllAndStore(productStore, {
-      category: category.value,
+   getAllAndStore(productsStore, {
+      category: curCategory.value,
       filters: filters.value,
       sort: sort.value,
       page: page.value + 1,
@@ -68,19 +67,13 @@ const handleGetMore = () => {
                <Button
                   outline
                   rounded
-                  :count="products.count"
+                  :count="products.count - page * config.pageSize"
                   describe="sản phẩm"
                   @click="() => handleGetMore()"
                >
                   Xem thêm
                </Button>
             </div>
-
-            <!-- <div className='pagination'>
-                  <Button outline rounded :count="countProduct" describe="sản phẩm">
-                     Xem thêm
-                  </Button>
-               </div> -->
          </div>
 
          <ProductFilter :category="curCategory" />

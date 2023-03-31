@@ -1,22 +1,25 @@
 import { defineStore } from "pinia";
 
-export const useProductStore = defineStore("productStore", {
+export const useProductsStore = defineStore("productStore", {
     state: () => ({
-        products: {},
+        products: '',
         category: '',
         page: 1,
-        filters: '',
-        sort: '',
         status: ''
-        }),
+    }),
     actions: {
-        store(payload) {
-            console.log("payload  =", payload);
-            this.products = payload.products || []
+        storingProducts(payload) {
+            console.log("payload productStore  =", payload);
+            this.products = payload.products || ''
             this.page = payload.page || 1
-            this.filters = payload.filters || '',
-            this.category = payload.category || '',
-            this.sort = payload.sort || '', 
+            this.category = payload.category || ''
+            this.status = payload.status || ''
+        },
+        getMoreProducts(payload) {
+            this.products.rows.push(...payload.products.rows)
+            this.products.count = payload.products.count
+            this.page = payload.page || 1
+            this.category = payload.category || ''
             this.status = payload.status || ''
         }
     }

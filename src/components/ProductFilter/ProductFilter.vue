@@ -1,33 +1,35 @@
 <script setup>
-import { ref, computed, unref, reactive } from 'vue';
-import { storeToRefs } from 'pinia';
-// import {$ref} from 'vue/macros-global'
-import Checkbox from './childs/Checkbox.vue';
-import Radiobox from './childs/Radiobox.vue';
-import { brands, prices } from './childs/continents';
-import { getAllAndStore } from '../../store/actions';
-import { useProductStore } from '../../store/productStore';
+import { ref, computed } from "vue";
+import Checkbox from "./childs/Checkbox.vue";
+import Radiobox from "./childs/Radiobox.vue";
+import { brands, prices } from "./childs/continents.js";
+
+import { getAllAndStore } from "../../store/actions";
+import { useProductsStore } from "../../store/productStore";
+import { useFiltersStore } from "../../store/filterStore";
 
 const productFilter = ref({});
 const props = defineProps({
    category: String,
 });
-const productStore = useProductStore();
+const productStore = useProductsStore();
+const filterStore = useFiltersStore();
 
 const { page, sort } = computed(() => {
    return {
       page: productStore.page,
-      sort: productStore.sort,
+      sort: filterStore.sort,
    };
 });
 
 const showFilteredResults = (filters) => {
    getAllAndStore(productStore, {
       category: props.category,
-      page,
+      page: 1,
       sort,
       filters,
    });
+   filterStore.storingFilters({ filters, sort });
 };
 
 const handleFilter = (filter, by) => {
@@ -41,7 +43,7 @@ const handleFilter = (filter, by) => {
    }
 
    // nếu không có filter gì cả
-   if (!newFilter['brand'] && !newFilter['price']) newFilter = '';
+   if (!newFilter["brand"] && !newFilter["price"]) newFilter = "";
 
    productFilter.value = newFilter;
    showFilteredResults(newFilter);

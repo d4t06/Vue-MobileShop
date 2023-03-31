@@ -6,8 +6,8 @@ const request = axios.create({
 
 export const getProducts = async (querys) => {
    // console.log("service querys", querys)
-   const {filters, sort, ...rest} = querys
-   
+   const { filters, sort, ...rest } = querys
+
    if (!querys) {
       console.log("product service missing query");
       return []
@@ -20,27 +20,25 @@ export const getProducts = async (querys) => {
             ...sort //column=cur_price&type=asc
          }
       })
-      return response.data
-      // return []
+      return response
    } catch (error) {
-      console.log("loi getProducts services", error);
-      return []
+      console.log("loi getProducts services", { message: error });
    }
 };
+
 export const getProductDetail = async (querys) => {
    if (!querys) {
       console.log("product service missing query");
-      return []
    }
-   const {category, href} = querys
+   const { category, href } = querys
    try {
       const response = await request.get(`/products/${category}/${href}`, {
          params: {
          }
       })
-      return response.data
+      return response
    } catch (error) {
-      console.log("loi getProductDetail services", error);
+      console.log("loi getProductDetail services", { message: error });
    }
 };
 

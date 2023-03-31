@@ -46,10 +46,11 @@ const prevImage = () => {
   <div class="image-slider-frame">
     <div :class="{ banner: props.banner }" ref="imageSliderRef" class="image-slider">
       <div class="left-arrow slider-control" @click="prevImage()">
-        <span class="ti-angle-left"></span>
+        <i class="material-icons">chevron_left</i>
+
       </div>
       <div class="right-arrow slider-control" @click="nextImage()">
-        <span class="ti-angle-right"></span>
+        <i class="material-icons">chevron_right</i>
       </div>
 
       <div class='slider-index'>

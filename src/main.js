@@ -3,7 +3,6 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './routes'
 import './assets/global.css'
-import './assets/themify-icons/themify-icons.css'
 
 const app = createApp(App)
 

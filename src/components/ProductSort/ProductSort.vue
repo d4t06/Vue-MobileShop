@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue';
-import { useProductStore } from '../../store/productStore';
+import { useProductsStore } from '../../store/productStore';
 import { getAllAndStore } from '../../store/actions';
 const continents = [
    {
@@ -29,7 +29,7 @@ const continents = [
    },
 ];
 
-const productStore = useProductStore();
+const productStore = useProductsStore();
 const checked = ref(1);
 
 const handleToggle = (id) => {

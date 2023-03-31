@@ -1,20 +1,39 @@
 import * as productServices from '../services/productServices';
 // import searchService from '../services/searchService';
 const getAllAndStore = async (piniaActions, query) => {
-    console.log("getAllAndStore query = ", query)
 
+   // console.log("getAllAndStore query = ", query)
    //  return;
    try {
       const response = await productServices.getProducts(query);
-      if (response) {
-        piniaActions.store({
-            products: response,
-            ...query,
+
+      if (!response || response.status === 431) {
+         piniaActions.storingProducts({
+            products: '',
+            status: "error",
          });
-         // setTimeout(async () => {
-         // }, 500);
-      } else {
          console.log('action getProduct response undefine');
+
+      }
+      else {
+         if (query.page === 1) {
+
+            piniaActions.storingProducts({
+               products: response.data,
+               status: "successful",
+               page: query.page,
+               category: query.category
+            });
+         } else {
+
+            // getMore
+            piniaActions.getMoreProducts({
+               products: response.data,
+               status: "successful",
+               page: query.page,
+               category: query.category
+            })
+         }
       }
    } catch (error) {
       console.log('loi trong action', error);
