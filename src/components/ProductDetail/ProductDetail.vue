@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, computed } from 'vue';
+import {computed } from 'vue';
 import ImageSlider from '../../components/ImageSlider/ImageSlider.vue';
 import Button from '../../components/Button/index.vue';
 

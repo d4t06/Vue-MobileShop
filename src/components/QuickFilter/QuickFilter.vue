@@ -2,7 +2,6 @@
 import { ref, computed, watch } from "vue";
 
 import { brands } from "../ProductFilter/childs/continents";
-import { defineProps } from "vue";
 import BrandList from "./BrandList.vue";
 import FilteredItem from "./FilteredItem.vue";
 import { useFiltersStore } from "../../store/filterStore";

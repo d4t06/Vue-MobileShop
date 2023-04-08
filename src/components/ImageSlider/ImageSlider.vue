@@ -69,6 +69,5 @@ const prevImage = () => {
 </template>
 
 <style lang="scss">
-// @import '../../assets/themify-icons/themify-icons.css';
 @import "./ImageSlider.module.scss";
 </style>
