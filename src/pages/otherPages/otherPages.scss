@@ -1,0 +1,42 @@
+.form {
+   flex-direction: column;
+   gap: 15px;
+   .input-group {
+      flex-direction: column;
+      gap: 5px;
+      font-size: 1.8rem;
+      input {
+         padding: 8px 0;
+         border-radius: 5px;
+         font-size: 1.8rem;
+         border: 2px solid #e1e1e1;
+      }
+      span {
+         font-size: 1.6rem;
+         color: rgb(247, 54, 54);
+      }
+   }
+}
+.error-msg {
+   background-color: #cd1818;
+   font-size: 1.6rem;
+   padding: 5px 8px;
+   color: #fff;
+   border-radius: 4px;
+   text-align: center;
+}
+.switch {
+   margin-top: 10px;
+   font-size: 1.4rem;
+   a {
+      color: #cd1818;
+      &:hover {
+         text-decoration: underline;
+      }
+   }
+}
+.favorite-input {
+   input {
+      margin-right: 10px;
+   }
+}
