@@ -1,8 +1,8 @@
 import * as productServices from '../services/productServices';
 // import searchService from '../services/searchService';
-const getAllAndStore = async (piniaActions, query) => {
+const getAllAndStoring = async (piniaActions, query) => {
 
-   // console.log("getAllAndStore query = ", query)
+   // console.log("getAllAndStoring query = ", query)
    //  return;
    try {
       const response = await productServices.getProducts(query);
@@ -63,4 +63,4 @@ const getOne = async (dispatch, query) => {
 //    }
 // };
 
-export { getAllAndStore, getOne };
+export { getAllAndStoring, getOne };

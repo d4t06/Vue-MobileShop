@@ -7,11 +7,6 @@ export const useProductsStore = defineStore("productStore", {
         page: 1,
         status: ''
     }),
-    getters: {
-        getCount() {
-            return this.products.count
-        }
-    },
     actions: {
         storingProducts(payload) {
             console.log("payload productStore  =", payload);

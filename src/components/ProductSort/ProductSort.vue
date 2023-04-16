@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useProductsStore } from '../../store/productStore';
-import { getAllAndStore } from '../../store/actions';
+import { getAllAndStoring } from '../../store/actions';
 const continents = [
    {
       id: 1,
@@ -44,7 +44,7 @@ const handleToggle = (id) => {
    sort.type = continents[id - 1].type;
 
    if (!sort.column) sort = '';
-   getAllAndStore(productStore, {
+   getAllAndStoring(productStore, {
       category: category.value,
       page: page.value,
       filters: filters.value,

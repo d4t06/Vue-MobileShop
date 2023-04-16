@@ -1,9 +1,10 @@
 import { defineStore } from "pinia";
 
-export const useAuthStore = defineStore("AuthStore", {
+export const useAuthStore = defineStore("authStore", {
    state: () => ({
       auth: {
          token: "",
+         //others info
       }
    }),
    actions: {

@@ -7,8 +7,6 @@ export const useFiltersStore = defineStore("filterStore", {
     }),
     actions: {
         storingFilters(payload) {
-            console.log("payload filterStore  =", payload);
-
             this.filters.brand = payload.filters.brand || '',
             this.filters.price = payload.filters.price || '',
             this.sort.column = payload.sort.column || '',

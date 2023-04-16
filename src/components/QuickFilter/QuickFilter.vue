@@ -6,7 +6,7 @@ import BrandList from "./BrandList.vue";
 import FilteredItem from "./FilteredItem.vue";
 import { useFiltersStore } from "../../store/filterStore";
 import { useProductsStore } from "../../store/productStore";
-import { getAllAndStore } from "../../store/actions";
+import { getAllAndStoring } from "../../store/actions";
 import { storeToRefs } from "pinia";
 
 const props = defineProps({
@@ -20,7 +20,7 @@ const productFilter = ref({brand: '', price: ''});
 const {sort, filters} = storeToRefs(filterStore)
 
 const showFilteredResults = (newFilters) => {
-   getAllAndStore(productStore, {
+   getAllAndStoring(productStore, {
       category: props.category,
       page: 1,
       sort: sort.value.column ? sort.value : '',

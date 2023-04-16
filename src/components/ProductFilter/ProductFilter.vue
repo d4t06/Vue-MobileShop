@@ -1,19 +1,19 @@
 <script setup>
-import { ref, computed, watch } from 'vue';
-import Checkbox from './childs/Checkbox.vue';
-import Radiobox from './childs/Radiobox.vue';
-import { brands, prices } from './childs/continents.js';
+import { ref, computed, watch } from "vue";
+import Checkbox from "./childs/Checkbox.vue";
+import Radiobox from "./childs/Radiobox.vue";
+import { brands, prices } from "./childs/continents.js";
 
-import { getAllAndStore } from '../../store/actions';
-import { useProductsStore } from '../../store/productStore';
-import { useFiltersStore } from '../../store/filterStore';
-import { storeToRefs } from 'pinia';
+import { getAllAndStoring } from "../../store/actions";
+import { useProductsStore } from "../../store/productStore";
+import { useFiltersStore } from "../../store/filterStore";
+import { storeToRefs } from "pinia";
 
 const props = defineProps({
    category: String,
 });
 const productFilter = ref({
-   filters: { brand: '', price: '' },
+   filters: { brand: "", price: "" },
 });
 const productStore = useProductsStore();
 const filterStore = useFiltersStore();
@@ -21,10 +21,10 @@ const filterStore = useFiltersStore();
 const { filters, sort } = storeToRefs(filterStore);
 
 const showFilteredResults = (newFilters) => {
-   getAllAndStore(productStore, {
+   getAllAndStoring(productStore, {
       category: props.category,
       page: 1,
-      sort: sort.value.column ? sort.value : '',
+      sort: sort.value.column ? sort.value : "",
       filters: newFilters,
    });
    filterStore.storingFilters({ filters: newFilters, sort: sort.value });
@@ -44,8 +44,8 @@ const handleFilter = (filter, by) => {
    newFilter[by] = filter;
 
    // nếu không có filter gì cả
-   if (!newFilter['brand']) delete newFilter['brand']
-   if (!newFilter['price']) delete newFilter['price']
+   if (!newFilter["brand"]) delete newFilter["brand"];
+   if (!newFilter["price"]) delete newFilter["price"];
 
    productFilter.value = newFilter;
    showFilteredResults(newFilter);
@@ -62,7 +62,6 @@ const handleFilter = (filter, by) => {
                   :data="brands[category]"
                   :handleFilter="handleFilter"
                />
-               <!-- truyền handleFilter vào cop Checkbox, chực hiện sau trể về đối số là filter sau đó tt -->
             </div>
          </div>
          <div class="filter-section">

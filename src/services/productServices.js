@@ -41,7 +41,21 @@ export const getProductDetail = async (querys) => {
       console.log("loi getProductDetail services", { message: error });
    }
 };
+export const search = async (q) => {
 
+   try {
+      const response = await request.get(`/products/search`, {
+         params: {
+            ...q
+         }
+      });
+
+      return response;
+   } catch (error) {
+
+      console.log("loi getProducts services", error);
+   }
+};
 export const buyProduct = async (data) => {
    if (!data) {
       console.log("data missing !");

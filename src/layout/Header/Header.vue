@@ -6,7 +6,6 @@ import { headPhoneIcons, laptopIcon, mobileIcons } from "../../assets/icons";
 import Search from "../../components/Search/Search.vue";
 
 const authStore = useAuthStore();
-
 const decode = computed(() => {
    return authStore.auth.token ? jwtDecode(authStore.auth.token) : "";
 });
@@ -77,6 +76,5 @@ const decode = computed(() => {
    </div>
 </template>
 <style scoped lang="scss">
-// @import '../../assets/themify-icons/themify-icons.css';
 @import "./Header.module.scss";
 </style>

@@ -14,7 +14,6 @@ import {headPhoneIcons, laptopIcon, mobileIcons} from "../../assets/icons"
                   <RouterLink class="brand" to="/">
                      HD Shop
                   </RouterLink>
-               <!-- <Search setShowModal={setShowModal}/> -->
                <Search/>
                   <div class="user-cta">
                      <span class="user-name">Nguyễn Hữu Đạt</span>
@@ -54,6 +53,5 @@ import {headPhoneIcons, laptopIcon, mobileIcons} from "../../assets/icons"
          </div>
 </template>
 <style lang="scss">
-// @import '../../assets/themify-icons/themify-icons.css';
 @import './Header.module.scss'
 </style>

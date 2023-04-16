@@ -2,27 +2,26 @@
 import { useRoute } from "vue-router";
 import { watch,  ref, computed } from "vue";
 import { storeToRefs } from "pinia";
-import config from "../../config";
+import config from "@/config";
 
-import { useProductsStore } from "../../store/productStore";
-import { useFiltersStore } from "../../store/filterStore";
+import { useProductsStore } from "@/store/productStore";
+import { useFiltersStore } from "@/store/filterStore";
 
-import { getAllAndStore } from "@/store/actions/";
+import { getAllAndStoring } from "@/store/actions/";
 
-import ImageSlider from "../../components/ImageSlider/ImageSlider.vue";
-import ProductItem from "../../components/ProductItem/ProductItem.vue";
-import ProductFilter from "../../components/ProductFilter/ProductFilter.vue";
-import Button from "../../components/Button/index.vue";
-import QuickFilter from "../../components/QuickFilter/QuickFilter.vue";
+import ImageSlider from "@/components/ImageSlider/ImageSlider.vue";
+import ProductItem from "@/components/ProductItem/ProductItem.vue";
+import ProductFilter from "@/components/ProductFilter/ProductFilter.vue";
+import Button from "@/components/Button/index.vue";
+import QuickFilter from "@/components/QuickFilter/QuickFilter.vue";
 
-import { banners } from "../../assets/data";
+import { banners } from "@/assets/data";
 
 const productsStore = useProductsStore();
 const filtersStore = useFiltersStore();
 const route = useRoute();
 const curCategory = ref(route.params.category);
 
-// props
 const { products, page } = storeToRefs(productsStore);
 const { filters, sort } = storeToRefs(filtersStore);
 
@@ -32,7 +31,7 @@ watch(
    route,
    async () => {
       curCategory.value = route.params.category;
-      getAllAndStore(productsStore, { category: curCategory.value, page: 1 });
+      getAllAndStoring(productsStore, { category: curCategory.value, page: 1 });
    },
    { immediate: true }
 );
@@ -47,16 +46,13 @@ const bannerImages = computed(() => {
 const handleGetMore = () => {
    const isFiltered = filters.value.brand || filters.value.price
    
-   getAllAndStore(productsStore, {
+   getAllAndStoring(productsStore, {
       category: curCategory.value,
       filters: isFiltered ? filters.value : '',
       sort: sort.value.column ? sort.value : '',
       page: page.value + 1,
    });
 };
-
-
-// console.log('re-render countproduct =', countProduct.value);
 </script>
 <template>
    <div class="product-container">
@@ -64,12 +60,11 @@ const handleGetMore = () => {
 
       <div class="product-body row">
          <div class="col col-9">
-            <!-- ref in template not .value -->
             <QuickFilter :category="curCategory" />
 
             <ProductItem v-if="products.rows" :data="products.rows" />
 
-            <div class="pagination">
+            <div class="pagination" v-if="products.rows">
                <Button
                   outline
                   rounded
@@ -80,6 +75,10 @@ const handleGetMore = () => {
                >
                   Xem thêm
                </Button>
+            </div>
+
+            <div v-if="!products.rows">
+               <h1>Không có sản phẩm nào</h1>
             </div>
          </div>
 
