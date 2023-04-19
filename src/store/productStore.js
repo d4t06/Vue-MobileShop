@@ -5,7 +5,7 @@ export const useProductsStore = defineStore("productStore", {
         products: {rows:'', count:''},
         category: '',
         page: 1,
-        status: ''
+        status: '',
     }),
     actions: {
         storingProducts(payload) {

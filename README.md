@@ -22,3 +22,9 @@
 -   Thêm trang login và register
 -   Thêm authStore lưu thông tin được trả về sau khi đăng nhập
 -   Thêm axios interceptors nhưng chưa xong
+
+### update thứ 4 19/4/2023
+- Sửa dụng page_size do server trả về
+- Thêm chức năng search, hiện thị kết quả tìm kiếm
+- issue: Nếu search không có query thì không hiện
+- Các detail page cùng dạng url thì không re-render

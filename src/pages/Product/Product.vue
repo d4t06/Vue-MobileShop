@@ -2,7 +2,6 @@
 import { useRoute } from "vue-router";
 import { watch,  ref, computed } from "vue";
 import { storeToRefs } from "pinia";
-import config from "@/config";
 
 import { useProductsStore } from "@/store/productStore";
 import { useFiltersStore } from "@/store/filterStore";
@@ -25,7 +24,7 @@ const curCategory = ref(route.params.category);
 const { products, page } = storeToRefs(productsStore);
 const { filters, sort } = storeToRefs(filtersStore);
 
-const countProduct = computed(() => productsStore.getCount - page.value * config.pageSize)
+const countProduct = computed(() => products.value.count - (page.value * products.value.page_size))
 
 watch(
    route,

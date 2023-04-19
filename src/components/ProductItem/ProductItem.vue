@@ -53,6 +53,6 @@ const route = useRoute()
    </div>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 @import './ProductItem.module.scss';
 </style>
