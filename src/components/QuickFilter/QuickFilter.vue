@@ -1,27 +1,33 @@
 <script setup>
 import { ref, computed, watch } from "vue";
+import { useRoute } from "vue-router";
+import { storeToRefs } from "pinia";
+
+import { useFiltersStore } from "@/store/filterStore";
+import { useProductsStore } from "@/store/productStore";
+import { getAllAndStoring } from "@/store/actions";
 
 import { brands } from "../ProductFilter/childs/continents";
 import BrandList from "./BrandList.vue";
 import FilteredItem from "./FilteredItem.vue";
-import { useFiltersStore } from "../../store/filterStore";
-import { useProductsStore } from "../../store/productStore";
-import { getAllAndStoring } from "../../store/actions";
-import { storeToRefs } from "pinia";
 
-const props = defineProps({
-   category: String
-});
-
+// sửa dụng productStore và filterStore
 const filterStore = useFiltersStore();
 const productStore = useProductsStore();
+
+// lấy category url
+const route = useRoute()
+const category = computed(() => route.params.category)
+
+// khai báo biến chứa các giá trị của filter
 const productFilter = ref({brand: '', price: ''});
 
+// destructor filterStore
 const {sort, filters} = storeToRefs(filterStore)
 
 const showFilteredResults = (newFilters) => {
    getAllAndStoring(productStore, {
-      category: props.category,
+      category: category.value,
       page: 1,
       sort: sort.value.column ? sort.value : '',
       filters: newFilters,
@@ -29,12 +35,15 @@ const showFilteredResults = (newFilters) => {
    filterStore.storingFilters({ filters: newFilters, sort });
 };
 
+// chạy ngay lập tức, cập nhập filter từ store
 watch(filterStore,
 () => {
    productFilter.value = filters.value
 },
 {immediate: true}
 )
+
+// check có đang chọn filter hay không 
 const isFiltered = computed(() => !!(productFilter.value.brand || productFilter.value.price))
 
 const handleFilter = (filter, by) => {

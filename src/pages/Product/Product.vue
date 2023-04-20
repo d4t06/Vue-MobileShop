@@ -1,6 +1,6 @@
 <script setup>
 import { useRoute } from "vue-router";
-import { watch,  ref, computed } from "vue";
+import { watch, ref, computed } from "vue";
 import { storeToRefs } from "pinia";
 
 import { useProductsStore } from "@/store/productStore";
@@ -15,6 +15,7 @@ import Button from "@/components/Button/index.vue";
 import QuickFilter from "@/components/QuickFilter/QuickFilter.vue";
 
 import { banners } from "@/assets/data";
+import ProductSort from "../../components/ProductSort/ProductSort.vue";
 
 const productsStore = useProductsStore();
 const filtersStore = useFiltersStore();
@@ -44,7 +45,7 @@ const bannerImages = computed(() => {
 
 const handleGetMore = () => {
    const isFiltered = filters.value.brand || filters.value.price
-   
+
    getAllAndStoring(productsStore, {
       category: curCategory.value,
       filters: isFiltered ? filters.value : '',
@@ -59,19 +60,14 @@ const handleGetMore = () => {
 
       <div class="product-body row">
          <div class="col col-9">
-            <QuickFilter :category="curCategory" />
+            <QuickFilter />
+            <ProductSort />
 
             <ProductItem v-if="products.rows" :data="products.rows" />
 
             <div class="pagination" v-if="products.rows">
-               <Button
-                  outline
-                  rounded
-                  :count="countProduct < 0 ? 0 : countProduct"
-                  describe="sản phẩm"
-                  @click="() => handleGetMore()"
-                  :disable="countProduct <= 0"
-               >
+               <Button outline rounded :count="countProduct < 0 ? 0 : countProduct" describe="sản phẩm"
+                  @click="() => handleGetMore()" :disable="countProduct <= 0">
                   Xem thêm
                </Button>
             </div>
@@ -101,19 +97,24 @@ const handleGetMore = () => {
       font-weight: 500;
    }
 }
+
 .product-body {
    margin-top: 15px;
 }
+
 .pagination {
    margin-top: 15px;
    text-align: center;
 }
+
 .no-product {
    text-align: center;
    margin-top: 50px;
+
    .image-frame {
       width: 100%;
       height: 184px;
+
       img {
          height: 100%;
       }

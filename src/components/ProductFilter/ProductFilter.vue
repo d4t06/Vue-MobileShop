@@ -23,8 +23,13 @@ const { filters, sort } = storeToRefs(filterStore);
 const showFilteredResults = (newFilters) => {
    getAllAndStoring(productStore, {
       category: props.category,
+      // khi filter, sẽ reset page về 1
       page: 1,
+
+      // kiểm tra xem có sort hay không
+      // nếu không sẽ không truyền lên khi fetch data
       sort: sort.value.column ? sort.value : "",
+
       filters: newFilters,
    });
    filterStore.storingFilters({ filters: newFilters, sort: sort.value });
@@ -58,19 +63,13 @@ const handleFilter = (filter, by) => {
          <div class="filter-section">
             <h2 class="filter-title">Hãng sản xuất</h2>
             <div class="filter-list">
-               <Checkbox
-                  :data="brands[category]"
-                  :handleFilter="handleFilter"
-               />
+               <Checkbox :data="brands[category]" :handleFilter="handleFilter" />
             </div>
          </div>
          <div class="filter-section">
             <h2 class="filter-title">Mức giá</h2>
             <div class="filter-list price">
-               <Radiobox
-                  :data="prices[category]"
-                  :handleFilter="handleFilter"
-               />
+               <Radiobox :data="prices[category]" :handleFilter="handleFilter" />
             </div>
          </div>
       </div>
@@ -83,20 +82,24 @@ const handleFilter = (filter, by) => {
    padding-top: 15px;
    margin-left: 30px;
 }
+
 .filter-section {
    margin-bottom: 25px;
    padding-left: 5px;
 }
+
 .filter-title {
    margin-bottom: 15px;
    font-weight: 600;
 }
+
 .filter-list {
    display: flex;
    flex-wrap: wrap;
    column-gap: 15px;
    row-gap: 17px;
 }
+
 .price {
    flex-direction: column;
 }

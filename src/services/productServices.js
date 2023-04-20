@@ -5,8 +5,8 @@ const request = axios.create({
 });
 
 export const getProducts = async (querys) => {
-   // console.log("service querys", querys)
-   const { filters, sort, ...rest } = querys
+   console.log("service querys", querys);
+   const { filters, sort, ...rest } = querys;
 
    if (!querys) {
       console.log("product service missing query");
@@ -16,11 +16,11 @@ export const getProducts = async (querys) => {
       const response = await request.get(`/products`, {
          params: {
             ...rest,
-            ...filters, //brand='samsung,iphone'
-            ...sort //column=cur_price&type=asc
-         }
-      })
-      return response
+            ...filters, //brand:'samsung,iphone', price:[0,3]
+            ...sort, //column:cur_price type:asc
+         },
+      });
+      return response;
    } catch (error) {
       console.log("loi getProducts services", { message: error });
    }
@@ -30,44 +30,41 @@ export const getProductDetail = async (querys) => {
    if (!querys) {
       console.log("product service missing query");
    }
-   const { category, href } = querys
+   const { category, href } = querys;
    try {
       const response = await request.get(`/products/${category}/${href}`, {
-         params: {
-         }
-      })
-      return response
+         params: {},
+      });
+      return response;
    } catch (error) {
       console.log("loi getProductDetail services", { message: error });
    }
 };
 export const search = async (q) => {
-
    try {
       const response = await request.get(`/products/search`, {
          params: {
-            ...q
-         }
+            ...q,
+         },
       });
 
       return response;
    } catch (error) {
-
       console.log("loi getProducts services", error);
    }
 };
 export const buyProduct = async (data) => {
    if (!data) {
       console.log("data missing !");
-      return
+      return;
    }
    try {
-      request.post('/products', {
+      request.post("/products", {
          body: {
-            ...data
-         }
-      })
+            ...data,
+         },
+      });
    } catch (error) {
-      console.log('buy product fail, ', error)
+      console.log("buy product fail, ", error);
    }
-}
+};

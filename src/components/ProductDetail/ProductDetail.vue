@@ -37,7 +37,7 @@ const colors = computed(() => {
 });
 
 const memories = computed(() =>
-      props.data.data[0].memories.slice(0, props.data.data[0].memories.length - 5).split('*and*')
+      props.data.data[0]?.memories?.slice(0, props.data.data[0].memories.length - 5).split('*and*') || '' 
    );
 
 

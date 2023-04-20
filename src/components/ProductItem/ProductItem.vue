@@ -1,6 +1,5 @@
 <script setup>
    import { useRoute } from 'vue-router'
-   import ProductSort from '../ProductSort/ProductSort.vue'
 const props = defineProps({
    data: Array,
    search: Boolean
@@ -11,7 +10,6 @@ const route = useRoute()
 
 <template>
    <div class="product-container">
-      <ProductSort />
       <div class="row">
          <div v-for="item in data" :class="['col', {'col-3' : search, 'col-4': !search}]">
             <div class="product-item">

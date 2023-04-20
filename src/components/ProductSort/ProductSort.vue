@@ -1,6 +1,8 @@
 <script setup>
 import { ref, computed } from 'vue';
+import { storeToRefs } from 'pinia';
 import { useProductsStore } from '../../store/productStore';
+import { useFiltersStore } from '../../store/filterStore'
 import { getAllAndStoring } from '../../store/actions';
 const continents = [
    {
@@ -28,15 +30,35 @@ const continents = [
       type: true,
    },
 ];
-
+// sử dụng store
 const productStore = useProductsStore();
+const filtersStore = useFiltersStore()
+
+// destructor store
+const { category, page } = storeToRefs(productStore)
+const { filters } = storeToRefs(filtersStore)
+
 const checked = ref(1);
+
+// kiểm tra xem có đang filter, nêu không sẽ không truyền lên khi fetch data
+const isFiltered = computed(() => !!(filters.value.price || filters.value.brand || ''))
+
+// lấy filter có giá trị
+const handleFilter = computed(() => {
+   if (!isFiltered) return '';
+
+   if (!filters.value.brand && isFiltered) {
+      return { price: filters.value.price }
+   }
+   if (!filters.value.price && isFiltered) {
+      return { price: filters.value.brand }
+   }
+
+   return filters.value
+})
 
 const handleToggle = (id) => {
    if (checked.value === id) return;
-   const page = computed(() => productStore.page);
-   const category = computed(() => productStore.category);
-   const filters = computed(() => productStore.filters);
 
    checked.value = id;
    let sort = {};
@@ -47,7 +69,7 @@ const handleToggle = (id) => {
    getAllAndStoring(productStore, {
       category: category.value,
       page: page.value,
-      filters: filters.value,
+      filters: handleFilter,
       sort,
    });
 };
@@ -57,12 +79,8 @@ const handleToggle = (id) => {
    <div class="product-sort">
       <h1>Xem theo</h1>
       <ul class="btn-group">
-         <li
-            v-for="(item, index) in continents"
-            class="sort-btn"
-            :class="{ active: item.id === checked }"
-            @click="() => handleToggle(item.id)"
-         >
+         <li v-for="(item, index) in continents" class="sort-btn" :class="{ active: item.id === checked }"
+            @click="() => handleToggle(item.id)">
             {{ item.value }}
          </li>
       </ul>
@@ -73,25 +91,31 @@ const handleToggle = (id) => {
 .product-sort {
    display: flex;
 }
+
 .product-sort {
    margin-top: 15px;
    align-items: center;
+
    h1 {
       margin-right: 20px;
    }
 }
+
 .btn-group {
    border: 1px solid #e1e1e1;
+
    .sort-btn {
       padding: 5px 10px;
       font-size: 1.6rem;
       border: 1px solid transparent;
       border-left-color: #e1e1e1;
       cursor: pointer;
+
       &:hover {
          border-color: #cd1818;
       }
    }
+
    .sort-btn.active {
       background-color: #cd1818;
       color: #fff;

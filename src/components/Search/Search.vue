@@ -1,13 +1,14 @@
 <script setup>
 import { ref, watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import debounce from "lodash.debounce";
 import * as productServices from "../../services/productServices";
 
 const query = ref("");
 const isLoading = ref(false);
 const products = ref("");
-const route = useRoute()
+const route = useRoute();
+const router = useRouter();
 
 const saveSearchChange = debounce(async () => {
    if (!query) return;
@@ -37,13 +38,13 @@ const handleClear = () => {
 };
 const handleSubmit = (e) => {
    e.preventDefault;
-   route.push(`/search/${query}`);
+   router.push(`/search/${query.value}`);
 
 }
 </script>
 <template>
    <div class="wrap">
-      <form class="form" @submit="event => handleSubmit(event)" action="">
+      <form class="form" @submit="event => handleSubmit(event)">
          <input
             class="input"
             type="text"

@@ -9,6 +9,7 @@ import { getAllSearchPage } from '@/store/actions/';
 
 import ProductItem from "@/components/ProductItem/ProductItem.vue";
 import Button from "@/components/Button/index.vue";
+import ProductSort from '../../components/ProductSort/ProductSort.vue';
 
 
 const productsStore = useProductsStore();
@@ -48,7 +49,7 @@ watch(
    { immediate: true }
 );
 
-const handleGetMore = () => {};
+const handleGetMore = () => { };
 </script>
 <template>
    <div class="product-container">
@@ -58,30 +59,22 @@ const handleGetMore = () => {};
             <h1 class="search-page-title">
                Tìm thấy
                <span style="color: #cd1818">
-                  {{ products.rows.length || 0 }} </span
-               > kết quả cho từ khóa {{ key }}
+                  {{ products.rows.length || 0 }} </span> kết quả cho từ khóa {{ key }}
             </h1>
 
             <!-- <h1>Kết quả tìm kiếm cho từ khóa {{key}}</h1> -->
 
-            <ProductSort :category="category" />
-            <div class="products-container">
-               <div class="row">
-                  <ProductItem v-if="products.rows" :data="products.rows" search/>
-               </div>
-            </div>
+            <ProductSort />
+
+            <ProductItem v-if="products.rows" :data="products.rows" search />
+
             <div class="pagination">
-               <Button
-                  outline
-                  rounded
-                  :count="countProduct < 0 ? 0 : countProduct"
-                  describe="sản phẩm"
-                  @click="() => handleGetMore()"
-                  :disable="countProduct <= 0"
-               >
+               <Button outline rounded :count="countProduct < 0 ? 0 : countProduct" describe="sản phẩm"
+                  @click="() => handleGetMore()" :disable="countProduct <= 0">
                   Xem thêm
                </Button>
             </div>
+
          </div>
       </div>
       <h1 v-if="!isLoading && !products.rows?.length">Không tìm thấy</h1>
