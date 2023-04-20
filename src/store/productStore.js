@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 export const useProductsStore = defineStore("productStore", {
     state: () => ({
-        products: {rows:'', count:''},
+        products: {rows:'', count:'', page_sizel: ''},
         category: '',
         page: 1,
         status: '',

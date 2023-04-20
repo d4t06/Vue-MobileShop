@@ -11,7 +11,6 @@ const getAllAndStoring = async (piniaActions, query) => {
             status: "error",
          });
          console.log('action getProduct response undefine');
-
       }
       else {
          if (query.page === 1) {
@@ -46,19 +45,17 @@ const getOne = async (dispatch, query) => {
    }
 };
 
-// const getSearchPage = async (dispatch, query) => {
-//    // console.log("getSearchPage query = ", query)
+const getAllSearchPage = async (piniaActions, query) => {
+   try {
+      const key = query.category.split('search=')[1]; //search=iphone 14
+      const response = await productServices.search({ q: key, page: query.page, sort: query.sort });
+      piniaActions.storingProducts(({
+         products: response.data,
+         ...query,
+      }));
+   } catch(err) {
+      console.log('action getSearchPage response undefine ', err);
+   }
+};
 
-//    try {
-//       const key = query.category.split('search=')[1]; //search=iphone 14
-//       const response = await searchService({ q: key, page: query.page, sort: query.sort });
-//       dispatch({
-//          products: response,
-//          ...query,
-//       });
-//    } catch {
-//       console.log('action getSearchPage response undefine');
-//    }
-// };
-
-export { getAllAndStoring, getOne };
+export { getAllAndStoring, getOne, getAllSearchPage };

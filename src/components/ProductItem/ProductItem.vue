@@ -3,6 +3,7 @@
    import ProductSort from '../ProductSort/ProductSort.vue'
 const props = defineProps({
    data: Array,
+   search: Boolean
 });
 const route = useRoute()
 
@@ -12,7 +13,7 @@ const route = useRoute()
    <div class="product-container">
       <ProductSort />
       <div class="row">
-         <div v-for="item in data" class="col col-4">
+         <div v-for="item in data" :class="['col', {'col-3' : search, 'col-4': !search}]">
             <div class="product-item">
                <RouterLink :to="`/${route.params.category}/${item.href}`" class="product-item-frame">
                   <img class="product-item-image" :src="item.image"/>

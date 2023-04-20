@@ -5,6 +5,7 @@ import DetailPage from "../pages/DetailPage/DetailPage.vue";
 import Login from "../pages/otherPages/Login.vue";
 import Register from "../pages/otherPages/Register.vue";
 import NotFound from "../pages/otherPages/NotFound.vue";
+import SearchPage from '../pages/SearchPage/SearchPage.vue'
 
 const routes = [
    // comom
@@ -17,10 +18,12 @@ const routes = [
    { path: "/login", component: Login },
    { path: "/register", component: Register },
 
+   // search
+   { path: "/search/:key", component: SearchPage },
+
+
    // notfound
    { path: "/:pathMatch(.*)*", component: NotFound },
-
-
 ];
 
 const router = createRouter({
