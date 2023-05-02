@@ -30,6 +30,24 @@ button.disable {
    pointer-events: none;
 }
 
+.disable {
+   opacity: .6;
+   pointer-events: none;
+}
+
+.loading {
+   animation: spinner 1.5s linear infinite;
+}
+
+@keyframes spinner {
+   from {
+      transform: rotate(0);
+   }
+   to {
+      transform: rotate(-360deg);
+   }
+}
+
 li {
    list-style: none;
 }
@@ -42,9 +60,6 @@ li {
    display: none;
 }
 
-.image-frame img {
-   width: 100%;
-}
 
 .star {
    color: rgb(255, 208, 0);

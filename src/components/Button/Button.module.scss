@@ -23,9 +23,13 @@
 	background-color: #cd1818;
 	color: #fff;
 	&:hover {
-		background-color: #fff;
-		color: #cd1818;
+		background-color: #a21313;
 	}
+}
+.hasIcon {
+	display: flex;
+	align-items: center;
+	margin: 0 auto;
 }
 .full {
 	width: 100%;

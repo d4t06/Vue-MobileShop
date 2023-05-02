@@ -1,34 +1,39 @@
 <script setup>
-import { ref, computed, watch } from "vue";
-import Checkbox from "./childs/Checkbox.vue";
-import Radiobox from "./childs/Radiobox.vue";
-import { brands, prices } from "./childs/continents.js";
+import { ref, computed, watch } from 'vue';
+import Checkbox from './childs/Checkbox.vue';
+import Radiobox from './childs/Radiobox.vue';
+import { brands, prices } from './childs/continents.js';
 
-import { getAllAndStoring } from "../../store/actions";
-import { useProductsStore } from "../../store/productStore";
-import { useFiltersStore } from "../../store/filterStore";
-import { storeToRefs } from "pinia";
+import { getAllAndStoring } from '../../store/actions';
+import { useProductsStore } from '../../store/productStore';
+import { useFiltersStore } from '../../store/filterStore';
+import { storeToRefs } from 'pinia';
 
 const props = defineProps({
    category: String,
 });
-const productFilter = ref({
-   filters: { brand: "", price: "" },
-});
+
 const productStore = useProductsStore();
 const filterStore = useFiltersStore();
 
+const { status } = storeToRefs(productStore);
 const { filters, sort } = storeToRefs(filterStore);
+
+const productFilter = ref({
+   filters: { brand: '', price: '' },
+});
+const curFilter = ref('');
 
 const showFilteredResults = (newFilters) => {
    getAllAndStoring(productStore, {
       category: props.category,
+      
       // khi filter, sẽ reset page về 1
       page: 1,
 
       // kiểm tra xem có sort hay không
       // nếu không sẽ không truyền lên khi fetch data
-      sort: sort.value.column ? sort.value : "",
+      sort: sort.value.column ? sort.value : '',
 
       filters: newFilters,
    });
@@ -47,10 +52,11 @@ const handleFilter = (filter, by) => {
    let newFilter = { ...productFilter.value };
 
    newFilter[by] = filter;
+   curFilter.value = by;
 
    // nếu không có filter gì cả
-   if (!newFilter["brand"]) delete newFilter["brand"];
-   if (!newFilter["price"]) delete newFilter["price"];
+   if (!newFilter['brand']) delete newFilter['brand'];
+   if (!newFilter['price']) delete newFilter['price'];
 
    productFilter.value = newFilter;
    showFilteredResults(newFilter);
@@ -59,17 +65,23 @@ const handleFilter = (filter, by) => {
 
 <template>
    <div class="col col-3">
-      <div class="product-filter">
+      <div :class="['product-filter', { disable: status === 'loading' }]">
          <div class="filter-section">
             <h2 class="filter-title">Hãng sản xuất</h2>
             <div class="filter-list">
-               <Checkbox :data="brands[category]" :handleFilter="handleFilter" />
+               <Checkbox
+                  :data="brands[category]"
+                  :handleFilter="handleFilter"
+               />
             </div>
          </div>
          <div class="filter-section">
             <h2 class="filter-title">Mức giá</h2>
             <div class="filter-list price">
-               <Radiobox :data="prices[category]" :handleFilter="handleFilter" />
+               <Radiobox
+                  :data="prices[category]"
+                  :handleFilter="handleFilter"
+               />
             </div>
          </div>
       </div>

@@ -16,7 +16,7 @@ watch(
    () => {
       checkedList.value = filters.value.brand;
    },
-   {immediate: true}
+   { immediate: true }
 );
 
 const handleToggle = (value) => {

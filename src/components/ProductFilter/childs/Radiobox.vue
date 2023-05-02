@@ -7,8 +7,8 @@ const props = defineProps({
    data: Array,
    handleFilter: Function,
 });
-const filterStore = useFiltersStore()
-const {filters} = storeToRefs(filterStore)
+const filterStore = useFiltersStore();
+const { filters } = storeToRefs(filterStore);
 const checked = ref('');
 
 watch(
@@ -32,7 +32,9 @@ const handleToggle = (array) => {
          type="radio"
          :id="item.text + item.id"
          :checked="
-            JSON.stringify(checked) === JSON.stringify(item.array) ? true : false
+            JSON.stringify(checked) === JSON.stringify(item.array)
+               ? true
+               : false
          "
          @change="() => handleToggle(item.array)"
       />

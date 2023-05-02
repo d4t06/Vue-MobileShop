@@ -1,6 +1,5 @@
 .product-container {
    margin-top: 20px;
-   min-height: 100vh;
 }
 
 .product-header {
@@ -17,18 +16,17 @@
    margin-top: 15px;
 }
 .pagination {
-   margin-top: 15px;
+   margin: 15px 0;
    text-align: center;
 }
 .no-product {
    text-align: center;
-   margin-top: 50px;
-   min-height: 600px;
+   margin-top: 80px;
+   height: 500px;
    .image-frame {
-       width: 100%;
-       height: 184px;
-       img {
-           height: 100%;
-       }
+      height: 200px;
+      img {
+         height: 100%;
+      }
    }
 }

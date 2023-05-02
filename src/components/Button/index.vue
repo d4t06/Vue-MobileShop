@@ -1,6 +1,6 @@
 <script>
 export default {
-   name: "Button",
+   name: 'Button',
    props: {
       primary: Boolean,
       outline: Boolean,
@@ -12,6 +12,8 @@ export default {
       disable: Boolean,
       to: String,
       onClick: Function,
+      hasIcon: Boolean,
+      loading: Boolean,
    },
 };
 </script>
@@ -22,14 +24,15 @@ export default {
    <button
       :class="[
          'primary',
-         { primary: true, outline, rounded, fill, full, disable },
+         { outline, rounded, fill, full, disable: disable || loading, hasIcon },
       ]"
       @click="onClick ? onClick() : ''"
    >
+      <i v-if="loading" class="material-icons loading">sync</i>
       <slot /> {{ count }} {{ describe }}
    </button>
 </template>
 
 <style lang="scss">
-@import "./Button.module.scss";
+@import './Button.module.scss';
 </style>

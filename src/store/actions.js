@@ -1,35 +1,38 @@
 import * as productServices from '../services/productServices';
-// import searchService from '../services/searchService';
 const getAllAndStoring = async (piniaActions, query) => {
-
    try {
-      const response = await productServices.getProducts(query);
+
+      // if get at search page
+      const [category, q] = query.category.split('='); //search=iphone 14
+
+      piniaActions.storingProducts({
+         status: 'loading',
+      });
+      
+      const response = await productServices.getProducts({...query, category, q});
 
       if (!response || response.status === 431) {
          piniaActions.storingProducts({
             products: '',
-            status: "error",
+            status: 'error',
          });
          console.log('action getProduct response undefine');
-      }
-      else {
+      } else {
          if (query.page === 1) {
-
             piniaActions.storingProducts({
                products: response.data,
-               status: "successful",
+               status: 'successful',
                page: query.page,
-               category: query.category
+               category: query.category,
             });
          } else {
-
             // getMore
             piniaActions.getMoreProducts({
                products: response.data,
-               status: "successful",
+               status: 'successful',
                page: query.page,
-               category: query.category
-            })
+               category: query.category,
+            });
          }
       }
    } catch (error) {
@@ -45,17 +48,4 @@ const getOne = async (dispatch, query) => {
    }
 };
 
-const getAllSearchPage = async (piniaActions, query) => {
-   try {
-      const key = query.category.split('search=')[1]; //search=iphone 14
-      const response = await productServices.search({ q: key, page: query.page, sort: query.sort });
-      piniaActions.storingProducts(({
-         products: response.data,
-         ...query,
-      }));
-   } catch(err) {
-      console.log('action getSearchPage response undefine ', err);
-   }
-};
-
-export { getAllAndStoring, getOne, getAllSearchPage };
+export { getAllAndStoring, getOne };

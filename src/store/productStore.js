@@ -10,7 +10,7 @@ export const useProductsStore = defineStore("productStore", {
     actions: {
         storingProducts(payload) {
             console.log("payload productStore  =", payload);
-            this.products = payload.products || ''
+            this.products = payload.products || this.products
             this.page = payload.page || 1
             this.category = payload.category || ''
             this.status = payload.status || ''

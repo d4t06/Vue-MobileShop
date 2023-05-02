@@ -59,7 +59,7 @@ const decode = computed(() => {
                </li>
             </ul>
 
-            <ul class="nav-list">
+            <ul v-if="!decode" class="nav-list">
                <li class="nav-item">
                   <RouterLink to="/login">
                      <p class="nav-text">Đăng nhập</p>

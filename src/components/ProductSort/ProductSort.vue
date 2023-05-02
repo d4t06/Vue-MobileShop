@@ -1,9 +1,11 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
+
 import { useProductsStore } from '../../store/productStore';
 import { useFiltersStore } from '../../store/filterStore'
 import { getAllAndStoring } from '../../store/actions';
+
 const continents = [
    {
       id: 1,
@@ -35,7 +37,7 @@ const productStore = useProductsStore();
 const filtersStore = useFiltersStore()
 
 // destructor store
-const { category, page } = storeToRefs(productStore)
+const { category, status } = storeToRefs(productStore)
 const { filters } = storeToRefs(filtersStore)
 
 const checked = ref(1);
@@ -45,13 +47,13 @@ const isFiltered = computed(() => !!(filters.value.price || filters.value.brand 
 
 // lấy filter có giá trị
 const handleFilter = computed(() => {
-   if (!isFiltered) return '';
+   if (!isFiltered.value) return '';
 
    if (!filters.value.brand && isFiltered) {
       return { price: filters.value.price }
    }
    if (!filters.value.price && isFiltered) {
-      return { price: filters.value.brand }
+      return { brand: filters.value.brand }
    }
 
    return filters.value
@@ -66,17 +68,27 @@ const handleToggle = (id) => {
    sort.type = continents[id - 1].type;
 
    if (!sort.column) sort = '';
+   // if (category.value.includes("search=")) {
+   //    getAllSearchPage(productStore, {
+   //       category: category.value,
+   //       page: page.value,
+   //       sort,
+   //    });
+   // } else {
+   // }
+   filtersStore.storingFilters({filters: handleFilter.value ,sort})
+
    getAllAndStoring(productStore, {
       category: category.value,
-      page: page.value,
-      filters: handleFilter,
+      page: 1,
+      filters: handleFilter.value,
       sort,
    });
 };
 </script>
 
 <template>
-   <div class="product-sort">
+   <div :class="['product-sort', {disable: status === 'loading'}]">
       <h1>Xem theo</h1>
       <ul class="btn-group">
          <li v-for="(item, index) in continents" class="sort-btn" :class="{ active: item.id === checked }"

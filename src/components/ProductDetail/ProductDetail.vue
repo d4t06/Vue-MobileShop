@@ -1,51 +1,84 @@
 <script setup>
-import {computed } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
+
 import ImageSlider from '../../components/ImageSlider/ImageSlider.vue';
 import Button from '../../components/Button/index.vue';
+import ProductItem from '../../components/ProductItem/ProductItem.vue';
+
+import * as productServices from '../../services/productServices';
 
 const props = defineProps({
    data: Object,
 });
 
+const category = ref(props.data.category);
+const suggestProducts = ref();
+
+watchEffect(async () => {
+   suggestProducts.value = await productServices.getSuggest({
+      category: category.value,
+   });
+});
+
 const images = computed(() => {
-   return props.data.data[0].images
+   return props.data.data[0]?.images
       .slice(0, props.data.data[0].images.length - 5)
       .split('*and*');
 });
 
-const paramsIndex = [
-   'Màn hình',
-   'Hệ điều hành',
-   'Camera sau',
-   'Camera trước',
-   'CPU',
-   'Bộ nhớ Ram',
-   'Dung lượng',
-   'Sim',
-   'Pin',
-];
+const paramsIndex = {
+   dtdd: [
+      'Màn hình',
+      'Hệ điều hành',
+      'Camera sau',
+      'Camera trước',
+      'CPU',
+      'Bộ nhớ Ram',
+      'Dung lượng',
+      'Sim',
+      'Pin',
+   ],
+   laptop: [
+      'CPU',
+      'Bộ nhớ Ram',
+      'Ổ cứng',
+      'Màn hình',
+      'Card đồ họa',
+      'Cổng kết nối',
+      'Đặt biệt',
+      'Hệ điều hành',
+      'Thiết kế',
+      'Kích thước, khối lượng',
+      'Thời điểm ra mắt',
+   ],
+};
 
 const params = computed(() =>
    props.data.data[0].params
-      .slice(0, params.length - 5)
+      .slice(0, props.data.data[0]?.params.length - 5)
       .replaceAll('//', ', ')
       .split('*and*')
 );
 
 const colors = computed(() => {
-   props.data.data[0].colors.slice(0, props.data.data[0].colors.length - 5).split('*and*');
+   props.data.data[0].colors
+      ? props.data.data[0].colors
+           .slice(0, props.data.data[0]?.colors.length - 5)
+           .split('*and*')
+      : '';
 });
 
-const memories = computed(() =>
-      props.data.data[0]?.memories?.slice(0, props.data.data[0].memories.length - 5).split('*and*') || '' 
-   );
-
-
+const memories = computed(
+   () =>
+      props.data.data[0]?.memories
+         ?.slice(0, props.data.data[0].memories.length - 5)
+         .split('*and*') || ''
+);
 </script>
 <template>
    <div class="product-header">
       <p>
-         {{ props.data.category === 'dtdd' ? 'Điện thoại ' : 'Laptop ' }}
+         {{ category === 'dtdd' ? 'Điện thoại ' : 'Laptop ' }}
          {{ props.data.name }}
       </p>
       <div class="header-box">
@@ -61,14 +94,24 @@ const memories = computed(() =>
    </div>
    <div class="row main-contain">
       <div class="col-large col-7 box_left">
+
          <ImageSlider :data="images" />
+         
          <div class="detail-image">
-            <img :src="`${props.data.data[0].param_image}`" alt="" />
+            <img
+               :src="
+                  props.data.data[0].param_image ||
+                  'https://cdn.tgdd.vn/Products/Images/44/279259/Kit/asus-tuf-gaming-fx506lhb-i5-hn188w-note.jpg'
+               "
+               alt=""
+            />
          </div>
          <div class="product-detail">
             <div class="col-full content">
                <p class="content-title">
-                  Thông tin điện thoại {{ props.data.name }}
+                  Thông tin
+                  {{ category === 'dtdd' ? 'Điện thoại ' : 'Laptop ' }}
+                  {{ props.data.name }}
                </p>
                <p class="content-text">
                   Được xem là một trong những phiên bản iPhone "giá rẻ" của bộ 3
@@ -76,7 +119,13 @@ const memories = computed(() =>
                   nhiều ưu điểm mà hiếm có một chiếc smartphone nào khác sở hữu
                </p>
                <div class="image-frame content-image">
-                  <img :src="`${props.data.data[0].param_image}`" alt="" />
+                  <img
+                     :src="
+                        props.data.data[0].param_image ||
+                        'https://cdn.tgdd.vn/Products/Images/44/279259/Kit/asus-tuf-gaming-fx506lhb-i5-hn188w-note.jpg'
+                     "
+                     alt=""
+                  />
                </div>
             </div>
             <button class="more-detail-btn">Xem chi tiết</button>
@@ -92,21 +141,25 @@ const memories = computed(() =>
             </span>
             <span class="vat-tag"> Đã bao gồm 10% VAT </span>
          </div>
-         <div  class="product-options">
+         <div class="product-options">
             <h2 v-if="memories">Phiên bản:</h2>
-            
             <div v-if="memories" class="option-group">
-               
-               <div v-for="item, index in memories" :class="['option', { active: index == 0 }]">
-                  <p>{{item}}</p>
+               <div
+                  v-for="(item, index) in memories"
+                  :class="['option', { active: index == 0 }]"
+               >
+                  <p>{{ item }}</p>
                   <span>+ 500.000₫</span>
                </div>
             </div>
-            
+
             <h2 v-if="colors">Màu:</h2>
             <div class="option-group">
-               <div v-for="item, index in colors" :class="['option', { active: index == 0 }]">
-                  <p>{{item}}</p>
+               <div
+                  v-for="(item, index) in colors"
+                  :class="['option', { active: index == 0 }]"
+               >
+                  <p>{{ item }}</p>
                   <span>+ 200.000₫</span>
                </div>
             </div>
@@ -150,13 +203,12 @@ const memories = computed(() =>
             <table class="params-table">
                <tbody>
                   <tr>
-                     <th></th>
+                     <th style="width: 35%"></th>
                      <th></th>
                   </tr>
-
-                  <tr>
-                     <!-- <td>{{ paramsIndex[index] }}:</td> -->
-                     <!-- <td>{{ item.slice(0, -2) }}</td> -->
+                  <tr v-for="(item, index) in params">
+                     <td>{{ paramsIndex[category][index] }}:</td>
+                     <td>{{ item.slice(0, -2) }}</td>
                   </tr>
                </tbody>
             </table>
@@ -168,8 +220,12 @@ const memories = computed(() =>
    </div>
    <div class="row">
       <div class="product-suggest">
-         <h1 class="suggest-title">Xem thêm điện thoại khác</h1>
-         <!-- <ProductItem products="{products}" /> -->
+         <h1 class="suggest-title">
+            Xem thêm
+            {{ category === 'dtdd' ? 'Điện thoại ' : 'Laptop ' }}
+            Khác
+         </h1>
+         <ProductItem search :data="suggestProducts.data" />
       </div>
    </div>
    <div class="product-footer">

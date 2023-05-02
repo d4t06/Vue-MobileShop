@@ -34,3 +34,8 @@
 ### update thứ 5 20/4/2023
 
 -  Lọc các filter nào có giá trị nhưng chưa xong
+
+### update chủ nhật 30/4/1975
+- Khi sort, filter thì page = 1
+- Fix thứ tự khi sort ở trang trở lên
+- Thêm loading tăng trải nghiệm người dùng
