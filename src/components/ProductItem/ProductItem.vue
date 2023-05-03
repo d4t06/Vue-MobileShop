@@ -5,6 +5,10 @@ const props = defineProps({
    search: Boolean,
 });
 const route = useRoute();
+
+const scrollToTop = () => {
+    window.scrollTo(0,0);
+  }
 </script>
 
 <template>
@@ -18,6 +22,7 @@ const route = useRoute();
                <RouterLink
                   :to="`/${route.params.category}/${item.href}`"
                   class="product-item-frame"
+                  @click="scrollToTop()"
                >
                   <img class="product-item-image" :src="item.image" />
                </RouterLink>

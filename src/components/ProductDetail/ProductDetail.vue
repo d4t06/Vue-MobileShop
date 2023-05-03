@@ -1,11 +1,10 @@
 <script setup>
-import { computed, ref, watchEffect } from 'vue';
+import { computed, ref, watchEffect } from "vue";
 
-import ImageSlider from '../../components/ImageSlider/ImageSlider.vue';
-import Button from '../../components/Button/index.vue';
-import ProductItem from '../../components/ProductItem/ProductItem.vue';
+import ImageSlider from "../../components/ImageSlider/ImageSlider.vue";
+import Button from "../../components/Button/index.vue";
 
-import * as productServices from '../../services/productServices';
+import * as productServices from "../../services/productServices";
 
 const props = defineProps({
    data: Object,
@@ -23,62 +22,62 @@ watchEffect(async () => {
 const images = computed(() => {
    return props.data.data[0]?.images
       .slice(0, props.data.data[0].images.length - 5)
-      .split('*and*');
+      .split("*and*");
 });
 
 const paramsIndex = {
    dtdd: [
-      'Màn hình',
-      'Hệ điều hành',
-      'Camera sau',
-      'Camera trước',
-      'CPU',
-      'Bộ nhớ Ram',
-      'Dung lượng',
-      'Sim',
-      'Pin',
+      "Màn hình",
+      "Hệ điều hành",
+      "Camera sau",
+      "Camera trước",
+      "CPU",
+      "Bộ nhớ Ram",
+      "Dung lượng",
+      "Sim",
+      "Pin",
    ],
    laptop: [
-      'CPU',
-      'Bộ nhớ Ram',
-      'Ổ cứng',
-      'Màn hình',
-      'Card đồ họa',
-      'Cổng kết nối',
-      'Đặt biệt',
-      'Hệ điều hành',
-      'Thiết kế',
-      'Kích thước, khối lượng',
-      'Thời điểm ra mắt',
+      "CPU",
+      "Bộ nhớ Ram",
+      "Ổ cứng",
+      "Màn hình",
+      "Card đồ họa",
+      "Cổng kết nối",
+      "Đặt biệt",
+      "Hệ điều hành",
+      "Thiết kế",
+      "Kích thước, khối lượng",
+      "Thời điểm ra mắt",
    ],
 };
 
 const params = computed(() =>
    props.data.data[0].params
       .slice(0, props.data.data[0]?.params.length - 5)
-      .replaceAll('//', ', ')
-      .split('*and*')
+      .replaceAll("//", ", ")
+      .split("*and*")
 );
 
 const colors = computed(() => {
    props.data.data[0].colors
       ? props.data.data[0].colors
            .slice(0, props.data.data[0]?.colors.length - 5)
-           .split('*and*')
-      : '';
+           .split("*and*")
+      : "";
 });
 
 const memories = computed(
    () =>
       props.data.data[0]?.memories
          ?.slice(0, props.data.data[0].memories.length - 5)
-         .split('*and*') || ''
+         .split("*and*") || ""
 );
 </script>
 <template>
    <div class="product-header">
       <p>
-         {{ category === 'dtdd' ? 'Điện thoại ' : 'Laptop ' }}
+         {{ category === "dtdd" ? "Điện thoại " : "Laptop " }}
          {{ props.data.name }}
       </p>
       <div class="header-box">
@@ -94,9 +93,8 @@ const memories = computed(
    </div>
    <div class="row main-contain">
       <div class="col-large col-7 box_left">
-
          <ImageSlider :data="images" />
-         
+
          <div class="detail-image">
             <img
                :src="
@@ -110,7 +108,7 @@ const memories = computed(
             <div class="col-full content">
                <p class="content-title">
                   Thông tin
-                  {{ category === 'dtdd' ? 'Điện thoại ' : 'Laptop ' }}
+                  {{ category === "dtdd" ? "Điện thoại " : "Laptop " }}
                   {{ props.data.name }}
                </p>
                <p class="content-text">
@@ -215,24 +213,9 @@ const memories = computed(
          </div>
       </div>
    </div>
-   <div class>
-      <!-- <ProductRate /> -->
-   </div>
-   <div class="row">
-      <div class="product-suggest">
-         <h1 class="suggest-title">
-            Xem thêm
-            {{ category === 'dtdd' ? 'Điện thoại ' : 'Laptop ' }}
-            Khác
-         </h1>
-         <ProductItem search :data="suggestProducts.data" />
-      </div>
-   </div>
-   <div class="product-footer">
-      <h1>Hết, mua hay không mua nói một câu thôi !!!</h1>
-   </div>
+   <div class></div>
 </template>
 
 <style scoped lang="scss">
-@import './ProductDetail.module.scss';
+@import "./ProductDetail.module.scss";
 </style>

@@ -39,3 +39,8 @@
 - Khi sort, filter thì page = 1
 - Fix thứ tự khi sort ở trang trở lên
 - Thêm loading tăng trải nghiệm người dùng
+
+### update thứ 4 3/5/2023
+- Thêm persistent login
+- Thêm trang dashboard demo chức năng phân quyền
+- Fix không rerender khi cùng route detail page

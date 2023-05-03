@@ -1,25 +1,35 @@
 <script setup>
-import { watch, ref } from 'vue';
-import { useRoute } from 'vue-router';
-import * as productServices from '../../services/productServices';
-import ProductDetail from '../../components/ProductDetail/ProductDetail.vue';
+import { useRoute } from "vue-router";
+import { watch, watchEffect, ref } from "vue";
+import * as productServices from "../../services/productServices";
+
+import ProductDetail from "../../components/ProductDetail/ProductDetail.vue";
+import ProductItem from "../../components/ProductItem/ProductItem.vue";
 
 const route = useRoute();
-const data = ref('');
-const { category, href } = route.params;
+const product = ref();
+const suggestProducts = ref();
+
+watchEffect(async () => {
+   const res = await productServices.getSuggest({
+      'category':  route.params.category,
+   });
+
+   suggestProducts.value = res.data
+});
 
 watch(
    route,
    async () => {
       try {
          const response = await productServices.getProductDetail({
-            category,
-            href,
+            'category': route.params.category,
+            'href': route.params.href,
          });
 
-         data.value = response.data;
+         product.value = response.data[0];
       } catch (error) {
-         console.log('detailPage error', { message: error });
+         console.log("detailPage error", { message: error });
       }
    },
    { immediate: true }
@@ -28,7 +38,20 @@ watch(
 
 <template>
    <div class="wrapper">
-      <ProductDetail v-if="data" :data="data[0]" />
+      <ProductDetail v-if="product" :data="product" />
+
+      <div class="row mt15">
+         <div class="product-suggest">
+            <h1 class="suggest-title">
+               Xem thêm
+               {{ route.params.category === "dtdd" ? "Điện thoại " : "Laptop " }}
+               Khác
+            </h1>
+            <ProductItem v-if="suggestProducts" search :data="suggestProducts" />
+         </div>
+      </div>
+
+      <h1 class="mt15 tac">Footer</h1>
    </div>
 </template>
 

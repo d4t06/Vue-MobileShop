@@ -1,8 +1,9 @@
-import { createRouter, createWebHistory } from "vue-router";
 import { ref } from "vue";
+import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "../store/authStore";
-import authRequest from "../services/authService";
 import jwtDecode from "jwt-decode";
+import authRequest from "../services/authService";
+
 import Home from "../pages/Home/Home.vue";
 import Dashboard from "../pages/Dashboard/Dashboard.vue";
 import Unauthorized from "../pages/Unauthorized/Unauthorized.vue";
@@ -17,7 +18,7 @@ import SearchPage from "../pages/SearchPage/SearchPage.vue";
 const isLogin = ref(false);
 const isUnauthorized = ref(false)
 const routes = [
-   // comom
+
    { path: "/", component: Home },
    { path: "/:category", component: Product },
    { path: "/:category/:href", component: DetailPage },
@@ -32,6 +33,9 @@ const routes = [
    // unauthorized
    { path: "/unauthorized", component: Unauthorized },
    { path: "/user", component: User },
+
+    // notfound
+    { path: "/:pathMatch(.*)*", component: NotFound },
 
    // dashboard
    {
@@ -48,9 +52,6 @@ const routes = [
          if (!decode || decode.role_code != "R1") return "/unauthorized";
       },
    },
-
-   // notfound
-   { path: "/:pathMatch(.*)*", component: NotFound },
 ];
 
 const router = createRouter({
