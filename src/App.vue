@@ -10,3 +10,8 @@ import Header from './layout/Header/Header.vue';
         <RouterView />
     </div>
 </template>
+<style>
+html {
+  scroll-behavior: smooth;
+}
+</style>

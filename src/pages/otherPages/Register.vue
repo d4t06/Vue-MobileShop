@@ -55,23 +55,23 @@ const handleSubmit = async () => {
          </div>
          <div class="input-group df">
             <label for="">Mật khẩu</label>
-            <input name="password" v-model="data.password" type="password" />
+            <input name="password" v-model="data.password" type="text" />
          </div>
          <div class="input-group df">
             <label for="">Nhập lại mật khẩu</label>
             <input
                name="confirm-password"
                v-model="data.confirmPassword"
-               type="password"
+               type="text"
             />
          </div>
       </form>
       <div class="mt15 form-cta">
          <Button :onClick="handleSubmit"> Đăng ký </Button>
-         <p class="switch">
+         <h2 class="switch">
             Đã có tài khoản ?,
             <RouterLink to="/login">Đăng nhập ngay</RouterLink>
-         </p>
+         </h2>
       </div>
    </div>
 </template>

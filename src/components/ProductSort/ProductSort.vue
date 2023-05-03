@@ -1,5 +1,6 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 
 import { useProductsStore } from '../../store/productStore';
@@ -34,7 +35,8 @@ const continents = [
 ];
 // sử dụng store
 const productStore = useProductsStore();
-const filtersStore = useFiltersStore()
+const filtersStore = useFiltersStore();
+const route = useRoute();
 
 // destructor store
 const { category, status } = storeToRefs(productStore)
@@ -85,6 +87,10 @@ const handleToggle = (id) => {
       sort,
    });
 };
+
+watch(route, () => {
+   filtersStore.storingFilters({filters: '' ,sort: ''})
+})
 </script>
 
 <template>

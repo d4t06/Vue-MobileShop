@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import jwtDecode from "jwt-decode";
 import { useAuthStore } from "../../store/authStore";
-import { headPhoneIcons, laptopIcon, mobileIcons } from "../../assets/icons";
+import { headPhoneIcons, laptopIcon, mobileIcons, gearIcon, addIcon } from "../../assets/icons";
 import Search from "../../components/Search/Search.vue";
 
 const authStore = useAuthStore();
@@ -24,14 +24,14 @@ const decode = computed(() => {
             <RouterLink class="brand" to="/"> HD Shop </RouterLink>
             <Search />
             <div v-if="decode.username" class="user-cta">
-               <span class="user-name">Nguyễn Hữu Đạt</span>
-               <div class="image-frame">
+               <span class="user-name">{{decode.username}}</span>
+               <RouterLink to="/user" class="image-frame">
                   <img
                      class="user-image"
                      src="../../assets/images/avatar.jpg"
                      alt=""
                   />
-               </div>
+               </RouterLink>
             </div>
             <div v-else class="user-cta"></div>
          </div>
@@ -71,6 +71,17 @@ const decode = computed(() => {
                   </RouterLink>
                </li>
             </ul>
+
+            <ul v-if="decode.role_code === 'R1'" class="nav-list">
+               <li class="nav-item">
+                  <RouterLink to="/dashboard">
+                     <gearIcon/>
+                     <p class="nav-text">Admin</p>
+                  </RouterLink>
+               </li>
+               
+            </ul>
+            
          </div>
       </div>
    </div>

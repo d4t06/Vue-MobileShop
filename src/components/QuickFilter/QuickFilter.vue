@@ -32,7 +32,7 @@ const showFilteredResults = (newFilters) => {
       sort: sort.value.column ? sort.value : '',
       filters: newFilters,
    });
-   filterStore.storingFilters({ filters: newFilters, sort });
+   filterStore.storingFilters({ filters: newFilters, sort: sort.value });
 };
 
 // chạy ngay lập tức, cập nhật filter từ store

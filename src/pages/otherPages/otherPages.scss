@@ -4,12 +4,13 @@
    .input-group {
       flex-direction: column;
       gap: 5px;
-      font-size: 1.8rem;
+      font-size: 2rem;
       input {
-         padding: 8px 0;
+         padding: 8px 10px;
          border-radius: 5px;
-         font-size: 1.8rem;
          border: 2px solid #e1e1e1;
+         font-size: 2rem;
+         outline: none;
       }
       span {
          font-size: 1.6rem;
