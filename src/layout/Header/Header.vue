@@ -1,14 +1,19 @@
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import jwtDecode from "jwt-decode";
 import { useAuthStore } from "../../store/authStore";
 import { headPhoneIcons, laptopIcon, mobileIcons, gearIcon, addIcon } from "../../assets/icons";
+
 import Search from "../../components/Search/Search.vue";
+import Modal from "../../components/Modal/Modal.vue";
 
 const authStore = useAuthStore();
+const isShowModal = ref(false);
+
 const decode = computed(() => {
    return authStore.auth.token ? jwtDecode(authStore.auth.token) : "";
 });
+const setShowModal = (value) => isShowModal.value = value;
 
 </script>
 <template>
@@ -22,7 +27,7 @@ const decode = computed(() => {
       <div class="header-top">
          <div class="container header-top-wrap">
             <RouterLink class="brand" to="/"> HD Shop </RouterLink>
-            <Search />
+            <Search @setShowModal="setShowModal" />
             <div v-if="decode.username" class="user-cta">
                <span class="user-name">{{decode.username}}</span>
                <RouterLink to="/user" class="image-frame">
@@ -51,12 +56,6 @@ const decode = computed(() => {
                      <p class="nav-text">Laptop</p>
                   </RouterLink>
                </li>
-               <li class="nav-item">
-                  <RouterLink to="/laptop">
-                     <headPhoneIcons />
-                     <p class="nav-text">Phụ kiện</p>
-                  </RouterLink>
-               </li>
             </ul>
 
             <ul v-if="!decode" class="nav-list">
@@ -79,12 +78,12 @@ const decode = computed(() => {
                      <p class="nav-text">Admin</p>
                   </RouterLink>
                </li>
-               
             </ul>
             
          </div>
       </div>
    </div>
+   <Modal v-if="isShowModal"/>
 </template>
 <style scoped lang="scss">
 @import "./Header.module.scss";

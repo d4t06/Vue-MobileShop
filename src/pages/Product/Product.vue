@@ -7,7 +7,6 @@ import { getAllAndStoring } from "@/store/actions/";
 // store
 import { useProductsStore } from "@/store/productStore";
 import { useFiltersStore } from "@/store/filterStore";
-import { useAuthStore } from "../../store/authStore";
 
 // component
 import { banners } from "@/assets/data";

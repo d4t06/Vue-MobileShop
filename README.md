@@ -44,3 +44,5 @@
 - Thêm persistent login
 - Thêm trang dashboard demo chức năng phân quyền
 - Fix không rerender khi cùng route detail page
+- Fix ẩn kết quả search khi bấm vào một sản phẩm
+- Thêm modal

@@ -4,10 +4,17 @@ import { useRouter } from 'vue-router';
 import debounce from 'lodash.debounce';
 import * as productServices from '../../services/productServices';
 
+// const props = defineProps({
+//    setShowModal: Function,
+// })
+const emit = defineEmits(['setShowModal'])
+
+
 const query = ref('');
 const isLoading = ref(false);
 const products = ref('');
 const router = useRouter();
+const isShowPopup = ref(false)
 
 // debounce search, nếu dừng nhập trong thời gian
 // lớn hơn quy định sẽ chạy
@@ -32,7 +39,10 @@ const saveSearchChange = debounce(async () => {
 }, 900);
 
 // theo dõi thay đổi của query
-watch(query, saveSearchChange);
+watch(query, () => {
+   isShowPopup.value = true;
+   saveSearchChange();
+});
 
 const handleClear = () => {
    query.value = '';
@@ -42,6 +52,7 @@ const handleSubmit = (e) => {
    e.preventDefault();
    router.push(`/search/${query.value}`);
    handleClear();
+   emit('setShowModal', false)
 };
 </script>
 <template>
@@ -52,6 +63,8 @@ const handleSubmit = (e) => {
             type="text"
             placeholder="Hôm nay bạn muốn tìm gì..."
             v-model="query"
+            @focus="() => emit('setShowModal', true)"
+            @blur="() => emit('setShowModal', false)"
          />
          <button v-if="query && !isLoading" class="clear-btn">
             <i class="material-icons">cancel</i>
@@ -64,7 +77,7 @@ const handleSubmit = (e) => {
          </button>
       </form>
       <div
-         v-if="products.length && !isLoading && query"
+         v-if="products.length && !isLoading && query && isShowPopup"
          class="search__popup__wrapper"
       >
          <h2 class="search-result-title">Sản phẩm được gợi ý</h2>
@@ -73,6 +86,7 @@ const handleSubmit = (e) => {
                <RouterLink
                   :to="`/${item.category}/${item.href}`"
                   class="product-item"
+                  @click="() => isShowPopup = false"
                >
                   <div class="product-img">
                      <img :src="item.image" alt="" />
